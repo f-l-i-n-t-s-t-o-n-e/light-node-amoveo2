@@ -211,9 +211,50 @@ var abcd = (function() {
         console.log("oddsDigest is: " + oddsDigest);
 
 
-/*
         console.log(oddsDigest[0]);
+        console.log(oddsDigest[1]);
+        console.log(oddsDigest[2]);
+        console.log(oddsDigest[3]);
+        console.log(oddsDigest[4]);
 
+
+//find first instance of a sport
+    let firstSport = 0;
+
+
+    eligibleSportsArray = ["ATP TENNIS", "WTA TENNIS", "MLB BASEBALL", "NHL HOCKEY", "EURO SOCCER", "NBA BASKETBALL"];
+
+
+        for (let q = 0; q < oddsDigest.length; q++) {
+
+            if (firstSport == 0){
+
+                for (let w = 0; w < eligibleSportsArray.length; w++) {
+
+                    if (oddsDigest[q].search(eligibleSportsArray[w]) > Number(-1)){
+
+                    firstSport = q;
+
+                    }
+            
+                }
+
+            }
+
+        }
+
+        console.log(firstSport);
+        console.log(JSON.stringify(oddsDigest.slice(firstSport)));
+
+
+        var oddsDigest2 = (bettingOdds.slice(1+firstSport).map(function(x){return(atob(x))}));
+
+        console.log("oddsDigest2 is: " + oddsDigest2);
+
+        oddsDigest = oddsDigest2;
+
+/*
+    
 
 
         console.log((bettingOdds.slice(1).map(function(x){return(atob(x))}))[0]);
