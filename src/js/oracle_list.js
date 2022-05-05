@@ -5096,7 +5096,7 @@ async function showPositions(){
         console.log("KEYSPUB IS: " + keys.pub());
         console.log("IP IS: " + get_ip2());
 
-            const response = await rpc.apost(["account", keys.pub()], get_ip(), 8091);
+            const response = await rpc.apost(["account", keys.pub()], "159.89.87.58", 8091);
             if(response == "error") {
                 //display.innerHTML = "<h3>load a key with funds.</h3>";
             } else {
