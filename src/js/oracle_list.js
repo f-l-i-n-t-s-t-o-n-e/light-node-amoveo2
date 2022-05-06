@@ -1,4 +1,4 @@
-console.log = function () { };
+//console.log = function () { };
 
 var globalCID;
 var globalB1;
@@ -2797,8 +2797,8 @@ console.log("through");
 //zxcv
 
                 for(let d = 0; d < key1.length; d++){
-        let  x = d;
-        var key = key1[x];
+  //      let  x = d;
+        var key = key1[d];
 
                var tempBalDB;
 
@@ -2902,20 +2902,20 @@ console.log("through");
 
 
                 testList[key] = balances_db2_[key];
-                testListNonce[x] = key;
+                testListNonce[d] = key;
 
 
-                let bdk = balances_db2_[key];
+//                let bdk = balances_db2_[key];
 
                 var bdk2 = balances_db2_[key];
 
                 var testList2 = testList;
                 var testListNonce2 = testListNonce;
-                var x2 = x;
+                var x2 = d;
 
                 var button = button_maker2("Concede", function() { doitConcession(bdk2)});
 
-                var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, bdk, cidTemp) });
+                var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, bdk2, cidTemp) });
                 var cidTemp = cid_;
                 var button3_ = button_maker2("View market", function() { loadBookmark2(cidTemp) });
 
