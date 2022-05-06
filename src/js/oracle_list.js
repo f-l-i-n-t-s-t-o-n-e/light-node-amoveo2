@@ -6,6 +6,22 @@ var globalcreatetradenonce;
 
 var globalMemoAddress;
 
+var expertMode_;
+
+expertMode_ = 0;
+
+function expertMode(){
+
+if (expertMode_ == 0){
+expertMode_ = 1;
+}else{
+
+expertMode_ = 0;
+
+}
+
+}
+
 var globalBridgeBool;
 
 var globalNetworkName1;
@@ -204,8 +220,32 @@ var abcd = (function() {
 
 
 //        console.log(JSON.stringify(bettingOdds.slice(1).map(function(x){return(atob(x))})));
-        
 
+
+function isNumber(n){
+    return Number(n)=== n;
+}
+
+var bettingOdds3;
+
+bettingOdds3 = bettingOdds.filter(item => !( checkItem(item) ));
+
+
+function checkItem(_x){
+
+    return ((_x.length > 2) && isNumber(Number(_x)));
+
+}
+
+//console.log(ar) // [1, 2, 3]
+        
+        console.log("bettingOdds is: " + bettingOdds);
+        console.log("bettingOdds is: " + bettingOdds3);
+
+        console.log("bettingOdds is: " + bettingOdds.slice(1));
+        console.log("bettingOdds is: " + bettingOdds.slice(2));
+        console.log("bettingOdds is: " + bettingOdds.slice(4));
+        console.log("bettingOdds is: " + (bettingOdds.slice(4).map(function(x){return(atob(x))})));
 
         var oddsDigest = (bettingOdds.slice(1).map(function(x){return(atob(x))}));
         console.log("oddsDigest is: " + oddsDigest);
@@ -245,6 +285,9 @@ var abcd = (function() {
 
         console.log(firstSport);
         console.log(JSON.stringify(oddsDigest.slice(firstSport)));
+
+
+
 
 
         var oddsDigest2 = (bettingOdds.slice(1+firstSport).map(function(x){return(atob(x))}));
@@ -900,7 +943,12 @@ var abcd = (function() {
 //                    console.log("DST in effect?:" + isDaylightSavingsInEffect(Date(currentTimeEastern)));
 
 
+                    console.log( "timing: " + (Number( (currentTime - betTime) / 3600) ));
+
+                    console.log("timing2: " + _sport + ": " + _comp1 + " defeats " + _comp2 + ", " + _day2 + " (ET) ");
+
                     if (Number( (currentTime - betTime) / 3600) > parseFloat(-1)) {
+
                         console.log("tradeCreatedNot");
 
 //                                            await createTrade2(maxRisk, profit_, _oracle, 1);
@@ -1186,6 +1234,27 @@ var abcd = (function() {
             var optionPresetButton2_ = document.createElement("INPUT");
             optionPresetButton2_.type = 'checkbox';
             optionPresetButton2_.style= "width:15px;height:15px;"
+//            optionPresetButton2_.type = 'checkbox';
+
+
+//var element= document.getElementsByClassName('classname');
+
+
+function doSomething() {
+
+console.log(oracle_filter.value);
+
+if ( (oracle_filter.value != "") && (optionPresetButton2_.checked == true ) ) {  
+
+  filter();
+
+}
+
+}
+
+// add event listener to element 
+optionPresetButton2_.addEventListener("click", doSomething, false);
+
 //            optionPresetButton2_.style.display= 'flex';
 //            optionPresetButton2_.style.textAlign = 'center';
 
@@ -2714,7 +2783,7 @@ console.log("through");
 
 
          var key1 = Object.keys(balances_db2_);
-         var x = 0
+//         var x = 0
 
  
         var tempKey;
@@ -2722,7 +2791,13 @@ console.log("through");
         positionDiv.appendChild(tempDiv);
 
 
-        do {
+//        do {
+
+//x < key1.length
+//zxcv
+
+                for(let d = 0; d < key1.length; d++){
+        let  x = d;
         var key = key1[x];
 
                var tempBalDB;
@@ -2763,7 +2838,7 @@ console.log("through");
 
 //next find where the CID is stored 
         if (cid_ == undefined){
-            x = x + 1;
+ //           x = x + 1;
             internalNonce = internalNonce + 1;
         }else{
 
@@ -2818,6 +2893,9 @@ console.log("through");
 //                    console.log(JSON.stringify(json_data[1]));
 
 
+
+
+        function internalScope(){
                 tempKey = key;
                 globalDB = balances_db2_[key];
                 console.log("Wat is: " + JSON.stringify(wat));
@@ -2828,14 +2906,17 @@ console.log("through");
 
 
                 let bdk = balances_db2_[key];
-                let testList2 = testList;
-                let testListNonce2 = testListNonce;
-                let x2 = x;
 
-                var button = button_maker2("Concede", function() { doitConcession(bdk)});
+                var bdk2 = balances_db2_[key];
+
+                var testList2 = testList;
+                var testListNonce2 = testListNonce;
+                var x2 = x;
+
+                var button = button_maker2("Concede", function() { doitConcession(bdk2)});
 
                 var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, bdk, cidTemp) });
-                let cidTemp = cid_;
+                var cidTemp = cid_;
                 var button3_ = button_maker2("View market", function() { loadBookmark2(cidTemp) });
 
 
@@ -2862,12 +2943,20 @@ console.log("through");
 //                positionDiv.appendChild(text(Number(((Number(theirStake))/100000000).toPrecision(3))));
                 
                 internalNonce = internalNonce + 1;
-                x = x + 1;
+  //              x = x + 1;
+
+            }
+
+
+            internalScope();
+
             }
 
 
 }
-  while(x < key1.length);
+
+
+//  while(x < key1.length);
                 //            display_positions2(balances_db2_.slice(1));
   
 
@@ -3427,6 +3516,17 @@ if (tempvar2 != "[[-6]]"){
                 
           //      trueDiv.style.textIndent = "50px";
 
+//                console.log("expertmodetrue is: " + expertMode_);
+
+//                console.log("expertmodetrue is: " + sortedArray2[i][3]);
+
+//                console.log("expertmodetrue is: " + sortedArray2[i][4]);
+
+
+
+               if ( ((sortedArray[i][3] < 0.01 * sortedArray[i][4]) || (sortedArray[i][3] > 100 * sortedArray[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0) ) {
+
+               }else{
                 holderDiv.appendChild(buttonTrue);
                         holderDiv.appendChild(text(" | "));
 
@@ -3437,6 +3537,8 @@ if (tempvar2 != "[[-6]]"){
                 
                 holderDiv.appendChild(br());
 
+
+            }
                 }
             }
 
@@ -3558,6 +3660,9 @@ if (tempvar2 != "[[-6]]"){
 
                 }else{
 
+                if ( ((sortedArray2[i][3] < 0.01 * sortedArray2[i][4]) || (sortedArray2[i][3] > 100 * sortedArray2[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0) ) {
+
+                }else{
 
                 holderDiv.appendChild(buttonFalse);
                 holderDiv.appendChild(text(" | "));
@@ -3575,6 +3680,7 @@ if (tempvar2 != "[[-6]]"){
 
                                         }
 
+                }
 
 
                 let copyButton_ = button_maker2("Copy", function() { copyPubkey_() });
@@ -5058,6 +5164,14 @@ focusOracleFilter();
    async function PresetFilter(x){
 
  //       console.log(abcd.oracle_filter.value);
+
+
+
+        if (x == "Bridge"){
+
+            abcd.optionPresetButton2_.checked = false;
+
+        }
         filterText = x;
         abcd.oracle_filter.value = x;
         filter();
@@ -5958,6 +6072,7 @@ var internalNonce;
 //internalNonce = 0;
 abcd.getBookMark();
 
+//expertMode();
 
 
 "use strict";

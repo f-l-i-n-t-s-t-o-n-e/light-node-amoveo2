@@ -142,7 +142,7 @@ function bet_builder8(bet_e, amount_e, them_e){
 //    div.appendChild(br());
 //    var them_e //= text_input("how much they bet: ", div);
 //    div.appendChild(br());
-    var till_expires_e = 4;// = text_input("how many hours until this bet expires?: ", div);
+    var till_expires_e = 12;// = text_input("how many hours until this bet expires?: ", div);
 //    div.appendChild(br());
 //    var doit_button = button_maker2("make bet", doit);
 //    div.appendChild(doit_button);
