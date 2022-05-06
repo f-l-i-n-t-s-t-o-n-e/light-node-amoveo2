@@ -2796,7 +2796,7 @@ console.log("through");
 //x < key1.length
 //zxcv
 
-                for(let d = 0; d < key1.length; d++){
+                for(d = 0; d < key1.length; d++){
   //      let  x = d;
         var key = key1[d];
 
@@ -2907,7 +2907,7 @@ console.log("through");
 
 //                let bdk = balances_db2_[key];
 
-                var bdk2 = balances_db2_[key];
+                var bdk2 = wat;
 
                 var testList2 = testList;
                 var testListNonce2 = testListNonce;
