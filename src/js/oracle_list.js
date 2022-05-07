@@ -2913,9 +2913,12 @@ console.log("through");
                 var testListNonce2 = testListNonce;
                 var x2 = d;
 
-                var button = button_maker2("Concede", function() { doitConcession(bdk2)});
 
-                var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, bdk2, cidTemp) });
+                var new_version = JSON.parse(JSON.stringify (bdk2));
+
+                var button = button_maker2("Concede", function() { doitConcession(new_version)});
+
+                var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, new_version, cidTemp) });
                 var cidTemp = cid_;
                 var button3_ = button_maker2("View market", function() { loadBookmark2(cidTemp) });
 
