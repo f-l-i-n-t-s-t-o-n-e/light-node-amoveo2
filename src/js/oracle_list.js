@@ -2809,8 +2809,11 @@ console.log("through");
 //         console.log("RRRR display_positions22: " + JSON.stringify(balances_db2_[key]));
 
          var wat = balances_db2_[key];
+         var _time2 = balances_db2_[key].time;
          var bal_ = balances_db2_[key].bal;
          var type_ = balances_db2_[key].type;
+         var secondtype_ = balances_db2_[key].type;
+
          var cid_ = balances_db2_[key].cid;
          var oracle_ = balances_db2_[key].string;
     
@@ -2916,12 +2919,21 @@ console.log("through");
 
                 var new_version = JSON.parse(JSON.stringify (bdk2));
 
-                var button = button_maker2("Concede", function() { doitConcession(new_version)});
+//                var button = button_maker2("Concede", function() { doitConcession(new_version)});
 
                 var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, new_version, cidTemp) });
                 var cidTemp = cid_;
                 var button3_ = button_maker2("View market", function() { loadBookmark2(cidTemp) });
 
+                var balTemp = bal_;
+                
+                var typeTemp = secondtype_;
+
+                
+
+                var timeTemp = _time2;
+
+                var button = button_maker2("Concede", function() { doitConcession8(timeTemp, balTemp, typeTemp, cidTemp)});
 
 
                 console.log("testlist is: " + JSON.stringify(testList));
