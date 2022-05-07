@@ -1,4 +1,4 @@
-//console.log = function () { };
+console.log = function () { };
 
 var globalCID;
 var globalB1;
