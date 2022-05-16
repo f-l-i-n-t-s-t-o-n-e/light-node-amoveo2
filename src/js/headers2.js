@@ -130,6 +130,12 @@ function headers_main() {
 
 
 
+
+
+
+
+
+
     var wallet_text2= document.createElement("div");
     wallet_text2.innerHTML = "";
 
@@ -139,7 +145,7 @@ function headers_main() {
     wallet_text3.style.fontWeight = 'bold';
 
     document.body.appendChild(wallet_text3);
-    wallet_text3.appendChild(br());
+//    wallet_text3.appendChild(br());
     wallet_text3.appendChild(br());
 
 
