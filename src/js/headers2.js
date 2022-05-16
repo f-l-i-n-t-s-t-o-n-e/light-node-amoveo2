@@ -1,3 +1,6 @@
+var globalLastHeight;
+
+
 function headers_main() {
     const urlParams = new URLSearchParams(window.location.search);
     var mode = urlParams.get('mode');

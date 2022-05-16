@@ -5,7 +5,7 @@ var globalB1;
 var globalcreatetradenonce;
 
 
-var globalLastHeight;
+//var globalLastHeight;
 
 var globalLPLoopBool;
 
