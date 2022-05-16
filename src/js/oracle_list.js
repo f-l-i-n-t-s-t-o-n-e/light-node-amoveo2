@@ -1282,6 +1282,14 @@ if ( (oracle_filter.value != "") && (optionPresetButton2_.checked == true ) ) {
 
 }
 
+if ( (oracle_filter.value != "") && (optionPresetButton2_.checked == false ) ) {  
+
+  filter();
+
+}
+
+
+
 }
 
 // add event listener to element 
