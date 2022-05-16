@@ -145,7 +145,7 @@ function headers_main() {
     wallet_text3.style.fontWeight = 'bold';
 
     document.body.appendChild(wallet_text3);
-//    wallet_text3.appendChild(br());
+    wallet_text3.appendChild(br());
     wallet_text3.appendChild(br());
 
 
@@ -667,11 +667,11 @@ function headers_main() {
 
             keys.update_balance();
 
-            console.log("globalLPBool is: " + globalLPBool);
+//            console.log("globalLPBool is: " + globalLPBool);
 
-            console.log("globalLPBool is: " + top_header[1]);
+//            console.log("globalLPBool is: " + top_header[1]);
 
-            console.log("globalLPBool is: " + globalLastHeight);
+//            console.log("globalLPBool is: " + globalLastHeight);
 
 
             if (globalLastHeight == undefined){
