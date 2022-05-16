@@ -2,6 +2,140 @@
 //var db = {};
 
 
+function bet_builder9(bet_e, amount_e, them_e, _type){
+    var ZERO = btoa(array_to_string(integer_to_array(0, 32)));
+    var IP = default_ip();
+    
+    console.log("in bet builder " + bet_e);
+    console.log("in bet builder " + amount_e);
+    console.log("in bet builder " + them_e);
+    console.log("in bet builder " + _type);
+
+    var fee = 200000;
+//    var title = document.createElement("h3");
+//    title.innerHTML = "bet on anything";
+
+    //bet text. amount to bet. odds.
+//    var bet_e //= text_input("you win if: ", div);
+//    div.appendChild(br());
+//    var amount_e //= text_input("how much you bet: ", div);
+//    div.appendChild(br());
+//    var them_e //= text_input("how much they bet: ", div);
+//    div.appendChild(br());
+      var till_expires_e = 1;// = text_input("how many hours until this bet expires?: ", div);
+//    div.appendChild(br());
+//    var doit_button = button_maker2("make bet", doit);
+//    div.appendChild(doit_button);
+
+
+//swap offer explore logic
+//    var explore_swap_offers_div = document.createElement("div");
+//    explore_swap_offers_creator(explore_swap_offers_div, true);
+//    var swap_viewer_div = document.createElement("div");
+//    swap_viewer = swap_viewer_creator(swap_viewer_div);
+//    div.appendChild(explore_swap_offers_div);
+//    div.appendChild(swap_viewer_div);
+    
+
+    if(true){
+//        bet_e.value = "1=1";
+//        amount_e.value = "0.1";
+//        them_e.value = "0.1";
+//        till_expires_e.value = "10";
+    };
+    
+//    var active_bets = document.createElement("h3");
+//    active_bets.innerHTML = "active bets";
+    //div.appendChild(active_bets);
+
+    async function doit9(){
+        console.log("in doit");
+        var bet = bet_e; //= bet_e.value;
+        var amount = Math.round(parseFloat(amount_e) * token_units());
+        var them = Math.round(parseFloat(them_e) * token_units());
+
+
+        var expires = Number(2);        
+
+//        var expires = Math.round(
+//            parseFloat(till_expires_e)*6);
+
+        var MP = 1;//many possible prices.
+        var Text = bet;
+        var new_contract_tx =
+            new_scalar_contract.make_tx(
+                Text, MP);
+        var CH = new_contract_tx[2];
+        var cid = merkle.contract_id_maker(CH, 2);
+
+        //make the binary bet contract CID.
+        //make an offer where you give veo, and they pay in the side of the contract that you want.
+
+        var swap = {};
+        swap.type1 = 0;
+        swap.type2 = _type;
+        swap.cid1 = ZERO;
+        swap.cid2 = cid;
+        swap.amount1 = amount;
+        swap.amount2 = them + amount;
+        swap.partial_match = false;
+        swap.acc1 = keys.pub();
+        swap.end_limit = headers_object.top()[1] + expires;
+        var offer99 = swaps.offer_99(swap);
+        /*
+        var offer99 = {};
+        offer99.type1 = 1;
+        offer99.type2 = 0;
+        offer99.cid1 = cid;
+        offer99.cid2 = ZERO;
+        offer99.amount1 = (them + amount);
+        offer99.amount2 = Math.round(((them + amount) * 0.998) - (fee * 5))
+        offer99.partial_match = false;
+        offer99.acc1 = keys.pub();
+        offer99.end_limit = headers_object.top()[1] + expires + 1;
+        */
+        console.log(expires);
+        console.log(JSON.stringify(swap));
+        var signed_offer = swaps.pack(swap);
+        var signed_99 = swaps.pack(offer99);
+
+        var max_price = 1;//1 is for binary contracts.
+        var response1 = await rpc.apost(["add", 3, btoa(Text), 0, max_price, ZERO, 0], IP, 8090);
+        console.log(response1);
+
+
+        /*
+        var response = await rpc.apost(
+            ["add", signed_offer, signed_99],
+            IP, 8090);
+        */
+
+        publishSwap(signed_offer);
+
+//        console.log(response);
+        console.log( "successfully posted your bet offer. here it is " + JSON.stringify(signed_offer));
+//        console.log( "successfully sent your 99swap to the server. here it is: " + JSON.stringify(signed_99));
+        dcba.changeStatus();
+        //link.href = "contracts.html";
+        //link.innerHTML = "Your trade can be viewed on this page."
+        //link.target = "_blank";
+        //display.appendChild(link);
+        if (abcd.offersInput.value == ''){
+
+        }else{
+
+        if (globalLPBool != 1){            
+
+        await abcd.offerInputLoad();
+            
+        }
+            }
+    };
+
+    doit9();
+
+};
+
 function bet_builder2(bet_e, amount_e, them_e, _type){
     var ZERO = btoa(array_to_string(integer_to_array(0, 32)));
     var IP = default_ip();

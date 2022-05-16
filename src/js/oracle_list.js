@@ -1,8 +1,13 @@
-console.log = function () { };
+//console.log = function () { };
 
 var globalCID;
 var globalB1;
 var globalcreatetradenonce;
+
+
+var globalLastHeight;
+
+var globalLPLoopBool;
 
 var globalMemoAddress;
 
@@ -147,13 +152,16 @@ var abcd = (function() {
     
     var LPGoButton2 = button_maker2("Preview", function() { return liquidityProvision(1)});
 
+    var LPGoButton3 = button_maker2("Loop", function() { return liquidityProvision(2)});
+
+    var LPGoButton4 = button_maker2("Stop loop", function() { return turnOffAutoLP()});
 
 
     title3.appendChild(LPGoButton);
     title3.appendChild(text(" "));
     title3.appendChild(LPGoButton2);
-
-
+    title3.appendChild(text(" "));
+    title3.appendChild(LPGoButton3);
 
 
     title3.style.display = 'none';
@@ -166,13 +174,23 @@ var abcd = (function() {
     title3.appendChild(title4_);
 
 
+    // need to check if liquidityProvision should be run again against the block height
+
+
+
+    function turnOffAutoLP() {
+    
+    globalLPLoopBool = 0;
+
+    }
+
     async function liquidityProvision(_number){
         globalLPBool = 1;
         var maxRisk = Number(LPinput.value);  // * 100000000; lol
 
         if (_number == 0){
         
-            successVar.innerHTML = "<font color=\"green\">LP bot started</font>";
+            successVar.innerHTML = "<font color=\"green\">Sending trades</font>";
         
         }
 
@@ -180,9 +198,23 @@ var abcd = (function() {
 
             title4_.innerHTML = "";
 
-//            successVar.innerHTML = "<font color=\"green\">LP bot started</font>";
+//            successVar.innerHTML = "<font color=\"green\">LP bot started</font>";        
+
+        }
+
+
+        if (_number == 2){
+
+            globalLPLoopBool = 1;
+
+            successVar.innerHTML = "<font color=\"green\">LP bot started looping</font>";
         
         }
+
+
+
+
+
 
     //    need to pull them from zacks server
     //
@@ -963,7 +995,7 @@ function checkItem(_x){
 
 
 
-                        if (_number == 0){
+                        if ( (_number == 0) || (_number == 2 ) ){
 
                             await createTrade2(maxRisk, profit2, _oracle, 2);
                             console.log("tradeCreated" + maxRisk + " / " + profit2 + "/" + _oracle);          
@@ -3525,6 +3557,11 @@ if (tempvar2 != "[[-6]]"){
                     trueDiv.innerHTML = "Odds: " + sortedArray[i][1] + " | Risk: " + sortedArray[i][3] + " | Profit: " + sortedArray[i][4] ;
 
                     swapOfferTrue = sortedArray[i][2];
+
+                    console.log(JSON.stringify(swapOfferTrue));
+                    console.log(JSON.stringify(swapOfferTrue[1][3]));
+
+
                     let swapOfferTrue_ = swapOfferTrue;
 
                 var buttonTrue = button_maker2("Accept", function() { viewTrading(swapOfferTrue_)});
@@ -3537,9 +3574,13 @@ if (tempvar2 != "[[-6]]"){
 
 //                console.log("expertmodetrue is: " + sortedArray2[i][4]);
 
+    console.log("xxx: " + (swapOfferTrue[1][3] == headers_object.top()[1]));
+    console.log(headers_object.top()[1]);
 
 
-               if ( ((sortedArray[i][3] < 0.01 * sortedArray[i][4]) || (sortedArray[i][3] > 100 * sortedArray[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0) ) {
+               if ( ( ((sortedArray[i][3] < 0.01 * sortedArray[i][4]) || (sortedArray[i][3] > 100 * sortedArray[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0)) || (swapOfferTrue[1][3] == headers_object.top()[1]) ) {
+
+                console.log("inhere")
 
                }else{
                 holderDiv.appendChild(buttonTrue);
@@ -3675,7 +3716,7 @@ if (tempvar2 != "[[-6]]"){
 
                 }else{
 
-                if ( ((sortedArray2[i][3] < 0.01 * sortedArray2[i][4]) || (sortedArray2[i][3] > 100 * sortedArray2[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0) ) {
+                if ( (((sortedArray2[i][3] < 0.01 * sortedArray2[i][4]) || (sortedArray2[i][3] > 100 * sortedArray2[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0)) || (swapOfferFalse[1][3] == headers_object.top()[1])  ) {
 
                 }else{
 
@@ -4460,7 +4501,7 @@ if (tempvar2 != "[[-6]]"){
 
         let theirAmount_ = Number(_profit);
 
-        await bet_builder2(_t2, myAmount_, theirAmount_, _type);
+        await bet_builder9(_t2, myAmount_, theirAmount_, _type);
 //                setTimeout(offerInputLoad(), 3000);
    
 
@@ -4943,7 +4984,7 @@ if (tempvar2 != "[[-6]]"){
         });
     };
 
-    return {div2: div2, title1: title1, oracle_filter: oracle_filter, title: title, title0: title0, positionDiv: positionDiv, newDiv2: newDiv2, offersLoad: offersLoad, offersButton2: offersButton2, offersButton4_: offersButton4_, offersInput: offersInput, offerInputLoad: offerInputLoad, display_positions: display_positions, oracle_filter: oracle_filter, oracleDoc: oracleDoc, title:title, oracles: oracles, t2: t2, offers: offers, oracle_list_pull: (function() { return oracle_list_pull; }), display_oracles: display_oracles, display_oracle: display_oracle, display_offers: display_offers, display_positions2: display_positions2, hideBeforeDisplay2: hideBeforeDisplay2, title3: title3, newDiv2: newDiv2, successVar2: successVar2, positionsInput: positionsInput, getBookMark: getBookMark, pullbm: pullbm, true1: true1, false1: false1, optionPresetButton2_: optionPresetButton2_, positionShow: positionShow, positionHide: positionHide, resetfilterbutton: resetfilterbutton, positionConfirmation: positionConfirmation, loadBookmark2: loadBookmark2, beginBridge: beginBridge};
+    return {div2: div2, title1: title1, oracle_filter: oracle_filter, title: title, title0: title0, positionDiv: positionDiv, newDiv2: newDiv2, offersLoad: offersLoad, offersButton2: offersButton2, offersButton4_: offersButton4_, offersInput: offersInput, offerInputLoad: offerInputLoad, display_positions: display_positions, oracle_filter: oracle_filter, oracleDoc: oracleDoc, title:title, oracles: oracles, t2: t2, offers: offers, oracle_list_pull: (function() { return oracle_list_pull; }), display_oracles: display_oracles, display_oracle: display_oracle, display_offers: display_offers, display_positions2: display_positions2, hideBeforeDisplay2: hideBeforeDisplay2, title3: title3, newDiv2: newDiv2, successVar2: successVar2, positionsInput: positionsInput, getBookMark: getBookMark, pullbm: pullbm, true1: true1, false1: false1, optionPresetButton2_: optionPresetButton2_, positionShow: positionShow, positionHide: positionHide, resetfilterbutton: resetfilterbutton, positionConfirmation: positionConfirmation, loadBookmark2: loadBookmark2, beginBridge: beginBridge, liquidityProvision: liquidityProvision};
 
 })();
 console.log("trying to display positions");

@@ -653,11 +653,39 @@ function headers_main() {
             else {
                 console.log("bad header");
                 console.log(JSON.stringify(h[i])); }
+
+
         }
         if (get_more) { more_headers(); }
         else {
+
             keys.update_balance();
+
+            console.log("globalLPBool is: " + globalLPBool);
+
+            console.log("globalLPBool is: " + top_header[1]);
+
+            console.log("globalLPBool is: " + globalLastHeight);
+
+
+            if (globalLastHeight == undefined){
+
+                globalLastHeight = top_header[1];
+
+            }
+
+            if ( (globalLPLoopBool == 1) && (top_header[1] > globalLastHeight) ){
+                
+//                console.log
+                abcd.liquidityProvision(2);
+
+                console.log("inside liquidityProvision2");
+
+                globalLastHeight = top_header[1];              
             
+            }
+
+
             wallet_text.innerHTML = "Current height: " + top_header[1];
                         wallet_text.appendChild(br());
                         wallet_text.appendChild(br());
