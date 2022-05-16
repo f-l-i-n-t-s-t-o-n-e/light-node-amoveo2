@@ -676,6 +676,11 @@ function headers_main() {
 
 //            console.log("globalLPBool is: " + globalLastHeight);
 
+            wallet_text.innerHTML = "Current height: " + top_header[1];
+
+                        wallet_text.appendChild(br());
+                        wallet_text.appendChild(br());
+
 
             if (globalLastHeight == undefined){
 
@@ -695,9 +700,8 @@ function headers_main() {
             }
 
 
-            wallet_text.innerHTML = "Current height: " + top_header[1];
-                        wallet_text.appendChild(br());
-                        wallet_text.appendChild(br());
+
+
 
         }
     }
