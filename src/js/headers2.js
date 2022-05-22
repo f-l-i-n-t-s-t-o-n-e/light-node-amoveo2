@@ -132,9 +132,114 @@ function headers_main() {
             wallet_text.appendChild(br());
 
 
+    var oddsFormat = document.createElement("div");
+
+    oddsFormat.innerHTML = "Odds style: ";
+    oddsFormat.style.display = 'block';
+    oddsFormat.style.fontWeight = 'bold';
+
+    document.body.appendChild(oddsFormat);
+
+
+    var oddsFormat1 = document.createElement("div");
+
+    oddsFormat1.innerHTML = "American: ";
+    oddsFormat1.style.display = 'inline';
+    oddsFormat1.style.fontWeight = 'normal';
+
+
+    oddsFormat.appendChild(oddsFormat1);
+
+            var americanCheckbox = document.createElement("INPUT");
+            americanCheckbox.type = 'checkbox';
+            americanCheckbox.style= "width:15px;height:15px;"
+
+    oddsFormat1.appendChild(americanCheckbox);
 
 
 
+    var oddsFormat2 = document.createElement("div");
+
+    oddsFormat2.innerHTML = " | Fractional: ";
+    oddsFormat2.style.display = 'inline';
+    oddsFormat2.style.fontWeight = 'normal';
+
+    oddsFormat.appendChild(oddsFormat2);
+
+            var fractionalCheckbox = document.createElement("INPUT");
+            fractionalCheckbox.type = 'checkbox';
+            fractionalCheckbox.style= "width:15px;height:15px;"
+
+    oddsFormat2.appendChild(fractionalCheckbox);
+
+
+    americanCheckbox.addEventListener("click", doSomethingAmerican, false);
+    fractionalCheckbox.addEventListener("click", doSomethingFractional, false);
+
+
+    function doSomethingAmerican(){
+
+        if (americanCheckbox.checked == true){
+            fractionalCheckbox.checked = false;
+
+            //store in localstorage
+
+            window.localStorage.setItem("oddsFormatting", "american");
+
+        }
+
+        if (americanCheckbox.checked != true){
+            americanCheckbox.checked = true;
+        }
+
+    
+    }
+
+    function doSomethingFractional(){
+
+        if (fractionalCheckbox.checked == true){
+            americanCheckbox.checked = false;
+
+            window.localStorage.setItem("oddsFormatting", "fractional");            
+        }
+
+        if (fractionalCheckbox.checked != true){
+            fractionalCheckbox.checked = true;
+        }    
+
+
+    }
+
+
+    function oddsFormatStartup(){
+
+    if (window.localStorage.getItem("oddsFormatting") == null){
+
+
+        //defaults to american odds
+        window.localStorage.setItem("oddsFormatting", "american");
+
+        americanCheckbox.checked = true;
+
+    }else{
+
+            if (window.localStorage.getItem("oddsFormatting") == "american"){
+                    americanCheckbox.checked = true;
+            }
+
+            if (window.localStorage.getItem("oddsFormatting") == "fractional"){
+                    fractionalCheckbox.checked = true;
+            }
+
+
+    }
+    
+
+    }    
+
+
+    oddsFormat.appendChild(br());
+    oddsFormat.appendChild(br());
 
 
 
@@ -793,6 +898,10 @@ function headers_main() {
                 top: (function() { return top_header; }),
                 db: headers_db,
                 read_ewah: read_ewah,
+                oddsFormat: oddsFormat,
+                oddsFormatStartup: oddsFormatStartup,
+                americanCheckbox: americanCheckbox,
+                fractionalCheckbox: fractionalCheckbox,
                 on_height_change: on_height_change,
                 forks: forks, wallet_text: wallet_text, wallet_text3: wallet_text3, bookmarkText: bookmarkText, bookmarkText2: bookmarkText2, send3: send3};
 }
@@ -801,6 +910,9 @@ var headers_object = headers_main();
 headers_object.more_headers();
 //main2();
 
+
+
+headers_object.oddsFormatStartup();
 
     function clearblockslocal() {
    // console.log("pushtolocal check");

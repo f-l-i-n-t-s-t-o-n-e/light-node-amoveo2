@@ -2909,7 +2909,7 @@ console.log("through");
                 tempDiv.appendChild(firstThing);                
 
                 firstThing.appendChild(text("Balance: "));
-                firstThing.appendChild(text(Number(bal_ / 100000000).toPrecision(3)));
+                firstThing.appendChild(text(Number(bal_ / 100000000)));
 
                 firstThing.appendChild(text(" | "));                
                 firstThing.appendChild(text("Type: "));
@@ -4455,12 +4455,62 @@ if (tempvar2 != "[[-6]]"){
 
         let direction2 = direction;
 
+//probably dont have to do this over and over again
+        let oddsformat_ = window.localStorage.getItem("oddsFormatting");
+
+        if (oddsformat_ == null){
+
+            oddsformat_ = "american";
+
+        }
+
+        if (probLanguage == " | Betting odds: "){
+            if (oddsformat_ == "american"){
+
+            }else{
+
+                if (oddsformat_ == "fractional"){
+
+                    if (implProb[0] == "+"){
+
+                        implProb = implProb.substring(1,implProb.length);
+
+                        implProb = Number(implProb) / Number(100);
+
+                        implProb = parseFloat(implProb.toPrecision(3)) + "/1";
+
+                    }
+
+
+                    if (implProb[0] == "-"){
+
+                        implProb = implProb.substring(1,implProb.length);
+
+                        implProb = Number(100) / Number(implProb) ;
+
+                        implProb = parseFloat(implProb.toPrecision(3)) + "/1";
+
+                    }
+
+
+
+                }
+            
+            }
+
+
+        }
+
 
         if (direction2 == "the result is true"){
             console.log("zxcv in true")
     //        let tradeList = [implProb, swapOffer2, _risk_, _profit_]
             
             let _price = Number(_profit_)/(Number(_risk_) + Number(_profit_));
+
+
+
+
 
             trueArray.push([_price, implProb, swapOffer2, _risk_, _profit_]);
   //          console.log("zxcv: " + JSON.stringify(trueArray));
@@ -6033,6 +6083,8 @@ function hideAccountManagement(){
 //    keys.bal_div.style.display = 'block';
 
     headers_object.wallet_text3.style.display = 'none';
+    headers_object.oddsFormat.style.display = 'none';
+
     headers_object.bookmarkText.style.display = 'none';
 
 
@@ -6053,6 +6105,7 @@ function showAccountManagement(){
     keys.download_key_button.style.display = 'inline';
     keys.file_selector.style.display = 'inline';
 
+    headers_object.oddsFormat.style.display = 'block';
 
     headers_object.wallet_text3.style.display = 'block';
 
