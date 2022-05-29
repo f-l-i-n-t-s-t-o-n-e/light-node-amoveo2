@@ -5,6 +5,13 @@ var globalB1;
 var globalcreatetradenonce;
 
 
+var globalPubkeyNonce;
+
+var insideBridgeNonce;
+
+
+var globalBridgeBool2;
+
 //var globalLastHeight;
 
 var globalLPLoopBool;
@@ -1836,7 +1843,7 @@ var placeholder;
 
                 console.log("bridgeLanguage 1: " + oracle_text.split(" ")[40]);
 
-                let providerPubkey = oracle_text.split(" ")[45];
+                let providerPubkey = oracle_text.split(" ")[24];
 
                 let piece2_ = " has not received any of ";
 
@@ -2961,7 +2968,7 @@ console.log("through");
 
 //                var button = button_maker2("Concede", function() { doitConcession(new_version)});
 
-                var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, new_version, cidTemp) });
+
                 var cidTemp = cid_;
                 var button3_ = button_maker2("View market", function() { loadBookmark2(cidTemp) });
 
@@ -2974,7 +2981,7 @@ console.log("through");
                 var timeTemp = _time2;
 
                 var button = button_maker2("Concede", function() { doitConcession8(timeTemp, balTemp, typeTemp, cidTemp)});
-
+                var button2 = button_maker2("Sell", function() { doitConcession3(testList2, testListNonce2, x2, new_version, timeTemp, balTemp, typeTemp, cidTemp) });
 
                 console.log("testlist is: " + JSON.stringify(testList));
 
@@ -3036,16 +3043,24 @@ function testListTest(){
 
 var globalDB;
 
-function doitConcession3(testList_, testListNonce_, x_, a_, _cid){
+function doitConcession3(testList_, testListNonce_, x_, a_, _timeTemp, _balTemp, _typeTemp, _cidTemp){
 
-            var globalcidTruncate = _cid.slice(0,5)+ "..." + _cid.slice(_cid.length - Number (4), _cid.length);
+            var globalcidTruncate = _cidTemp.slice(0,5)+ "..." + _cidTemp.slice(_cidTemp.length - Number (4), _cidTemp.length);
             globalCIDLink.innerHTML = globalcidTruncate;
             globalCIDLink.target = "_blank";
-            globalCIDLink.href = "http://159.89.87.58:8080/explorers/contract_explorer.html?cid=".concat(_cid);    
+            globalCIDLink.href = "http://159.89.87.58:8080/explorers/contract_explorer.html?cid=".concat(_cidTemp);    
+
+
+        var remakeKey_ = {};
+        
+        remakeKey_['time'] = _timeTemp;
+        remakeKey_['bal'] = _balTemp;
+        remakeKey_['type'] = _typeTemp;
+        remakeKey_['cid'] = _cidTemp;
 
     newDiv2.style.display = 'block';
-    globalBalDB = a_;
-    globalCID_  = _cid;
+    globalBalDB = remakeKey_;
+    globalCID_  = _cidTemp;
 
 
 //    console.log("doit3: " + JSON.stringify(testList_));
@@ -3357,10 +3372,10 @@ if (tempvar2 != "[[-6]]"){
                 let bridgeCustomerNoSentButton = button_maker2("Go", function() { continueBridge() });
 
                 let bridgeProviderSentField = document.createElement("div");
-                let bridgeProviderSentButton = button_maker2("Go", function() { continueBridge() });
+                let bridgeProviderSentButton = button_maker2("I received my coins.", function() { continueBridge() });
 
                 let bridgeProviderNoSentField = document.createElement("div");
-                let bridgeProviderNoSentButton = button_maker2("Go", function() { continueBridge() });
+                let bridgeProviderNoSentButton = button_maker2("Didn't receive coins. Dispute.", function() { continueBridge() });
 
 
 
@@ -3380,7 +3395,7 @@ if (tempvar2 != "[[-6]]"){
 
     bridgingDiv_.appendChild(bridgingDiv2);
 
-    bridgingDiv2.innerHTML = "Bridge in progress. Follow instructions to get your security deposit back."
+    bridgingDiv2.innerHTML = "Bridge almost complete. Follow instructions to get your security deposit back.";
 
     bridgingDiv2.style.fontSize = "20px";
 
@@ -3408,12 +3423,12 @@ if (tempvar2 != "[[-6]]"){
 
     bridgeProviderNoSentField.style.textIndent = "50px";
 
-    bridgeProviderNoSentField.innerHTML = "If " + globalProviderPubkey + " failed to send you coins within 30 minutes of you sending them coins hit this button: ";
+    bridgeProviderNoSentField.innerHTML = "If " + globalProviderPubkey + " failed to send you coins within 30 minutes of you sending them coins, you will receive the bridge capacity as compensation.";
 
-    bridgingDiv_.appendChild(text(" "));
-    bridgeProviderNoSentButton.style.display = 'inline';
+//    bridgingDiv_.appendChild(text(" "));
+//    bridgeProviderNoSentButton.style.display = 'inline';
 
-    bridgingDiv_.appendChild(bridgeProviderNoSentButton);
+//    bridgingDiv_.appendChild(bridgeProviderNoSentButton);
 
     }
 
@@ -3433,7 +3448,7 @@ if (tempvar2 != "[[-6]]"){
 
     bridgingDiv.appendChild(bridgingDiv2);
 
-    bridgingDiv2.innerHTML = "Bridge in progress. Follow the instructions below."
+    bridgingDiv2.innerHTML = "Transaction has been mined. Send your coins to " + globalProviderPubkey + " on network " + globalNetworkName1;
 
     bridgingDiv2.style.fontSize = "20px";
 
@@ -3467,6 +3482,66 @@ if (tempvar2 != "[[-6]]"){
     bridgeCustomerNoSentButton.style.display = 'inline';
 
     bridgingDiv.appendChild(bridgeCustomerNoSentButton);
+
+
+
+
+
+//    bridgingDiv.innerHTML = "asdasdfsdf";
+
+
+    }
+
+
+    function beginBridge0(){
+
+    holderDiv.style.display = 'none';
+
+    bridgingDiv.style.display = 'inline';
+    bridgingDiv.innerHTML = "";
+    
+
+    offers.appendChild(bridgingDiv);
+
+    bridgingDiv.appendChild(br());
+//    bridgingDiv.style.textIndent = "50px";
+
+    bridgingDiv.appendChild(bridgingDiv2);
+
+    bridgingDiv2.innerHTML = "Bridge in progress. Follow the instructions below."
+
+    bridgingDiv2.style.fontSize = "20px";
+
+ //   bridgingDiv.appendChild(br());
+//    bridgingDiv.appendChild(br());
+
+    bridgingDiv.appendChild(br());
+    bridgeCustomerSentField.innerHTML = "Waiting for your Amoveo transactions to be mined into a block. One minute after that, the bridge will begin.";
+
+    bridgingDiv.appendChild(bridgeCustomerSentField);
+    bridgeCustomerSentField.style.display = 'inline';
+    bridgeCustomerSentField.style.textIndent = "50px";
+
+
+
+//    bridgingDiv.appendChild(text(" "));
+//    bridgeCustomerSentButton.style.display = 'inline';
+//    bridgingDiv.appendChild(bridgeCustomerSentButton);
+
+//    bridgingDiv.appendChild(br());
+//    bridgingDiv.appendChild(br());
+
+//    bridgingDiv.appendChild(bridgeCustomerNoSentField);
+//    bridgeCustomerNoSentField.style.display = 'inline';
+
+//    bridgeCustomerNoSentField.style.textIndent = "50px";
+
+  //  bridgeCustomerNoSentField.innerHTML = "If you failed to send your coins to " + globalProviderPubkey + " in time hit this button: ";
+
+//    bridgingDiv.appendChild(text(" "));
+//    bridgeCustomerNoSentButton.style.display = 'inline';
+
+ //   bridgingDiv.appendChild(bridgeCustomerNoSentButton);
 
 
 
@@ -4271,7 +4346,7 @@ if (tempvar2 != "[[-6]]"){
 
                 let oracle_text = t3_;
 
-                let providerPubkey = oracle_text.split(" ")[45];
+                let providerPubkey = oracle_text.split(" ")[24];
 
                 let piece2_ = " has not received any of ";
 
@@ -5042,7 +5117,7 @@ if (tempvar2 != "[[-6]]"){
         });
     };
 
-    return {div2: div2, title1: title1, oracle_filter: oracle_filter, title: title, title0: title0, positionDiv: positionDiv, newDiv2: newDiv2, offersLoad: offersLoad, offersButton2: offersButton2, offersButton4_: offersButton4_, offersInput: offersInput, offerInputLoad: offerInputLoad, display_positions: display_positions, oracle_filter: oracle_filter, oracleDoc: oracleDoc, title:title, oracles: oracles, t2: t2, offers: offers, oracle_list_pull: (function() { return oracle_list_pull; }), display_oracles: display_oracles, display_oracle: display_oracle, display_offers: display_offers, display_positions2: display_positions2, hideBeforeDisplay2: hideBeforeDisplay2, title3: title3, newDiv2: newDiv2, successVar2: successVar2, positionsInput: positionsInput, getBookMark: getBookMark, pullbm: pullbm, true1: true1, false1: false1, optionPresetButton2_: optionPresetButton2_, positionShow: positionShow, positionHide: positionHide, resetfilterbutton: resetfilterbutton, positionConfirmation: positionConfirmation, loadBookmark2: loadBookmark2, beginBridge: beginBridge, liquidityProvision: liquidityProvision};
+    return {div2: div2, title1: title1, oracle_filter: oracle_filter, title: title, title0: title0, positionDiv: positionDiv, newDiv2: newDiv2, offersLoad: offersLoad, offersButton2: offersButton2, offersButton4_: offersButton4_, offersInput: offersInput, offerInputLoad: offerInputLoad, display_positions: display_positions, oracle_filter: oracle_filter, oracleDoc: oracleDoc, title:title, oracles: oracles, t2: t2, offers: offers, oracle_list_pull: (function() { return oracle_list_pull; }), display_oracles: display_oracles, display_oracle: display_oracle, display_offers: display_offers, display_positions2: display_positions2, hideBeforeDisplay2: hideBeforeDisplay2, title3: title3, newDiv2: newDiv2, successVar2: successVar2, positionsInput: positionsInput, getBookMark: getBookMark, pullbm: pullbm, true1: true1, false1: false1, optionPresetButton2_: optionPresetButton2_, positionShow: positionShow, positionHide: positionHide, resetfilterbutton: resetfilterbutton, positionConfirmation: positionConfirmation, loadBookmark2: loadBookmark2, beginBridge: beginBridge, beginBridge0: beginBridge0, liquidityProvision: liquidityProvision};
 
 })();
 console.log("trying to display positions");
@@ -5825,7 +5900,15 @@ async function showPositions(){
                 if (globalBridgeBool == 1){
 
                     headers_object.send3(globalMemoAddress);
+
+                globalPubkeyNonce = await getNonce();
+
+//                beginBridge0();
+
                 globalBridgeBool = 0;
+
+                globalBridgeBool2 = 1;
+
                 }
 
             });
@@ -5840,7 +5923,15 @@ async function showPositions(){
 
                 function changeStatus3(){
                 acceptConfirmation.innerHTML = "";
+
+                if (globalBridgeBool2 != 1){                
                 abcd.offerInputLoad();
+            }
+
+            if (globalBridgeBool2 == 1){                
+                abcd.beginBridge0();
+            }
+
 
                 }
 
@@ -6192,6 +6283,27 @@ abcd.getBookMark();
 //expertMode();
 
 
+
+
+//ask for nonce
+
+async function getNonce(){
+
+//            let key = btoa(array_to_string(sub_accounts.key(keys.pub(), offer.cid1, offer.type1)));
+
+            let trie_key = keys.pub();
+
+            let x = await merkle.arequest_proof("accounts", trie_key);
+
+//            let sub_acc = await merkle.arequest_proof("accounts", trie_key);
+
+            console.log(JSON.stringify(x));
+            console.log(x[2]);
+
+            return(x[2]);
+}
+
+
 "use strict";
 function dstOffsetAtDate(dateInput) {
     var fullYear = dateInput.getFullYear()|0;
@@ -6263,3 +6375,6 @@ function isDaylightSavingsInEffect(dateInput) {
 }
 
 
+function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
+}

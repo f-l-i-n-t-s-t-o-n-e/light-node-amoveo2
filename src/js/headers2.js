@@ -731,7 +731,7 @@ function headers_main() {
 	//var ewah = Math.floor((Hashrate + ((N - 1) * prev_ewah)) / N);
 	return ewah;
     }
-    function absorb_headers(h) {
+    async function absorb_headers(h) {
 	//console.log(JSON.stringify(h[1]));
         var get_more = false;
         for (var i = 1; i < h.length; i++ ) {
@@ -775,6 +775,14 @@ function headers_main() {
 
             keys.update_balance();
 
+            let tempNonce = await getNonce();
+
+            if ( (tempNonce > globalPubkeyNonce) && (globalBridgeBool2 == 1) ){
+
+                setTimeout(abcd.beginBridge, 60000);
+                globalBridgeBool2 = 0;
+
+            }
 //            console.log("globalLPBool is: " + globalLPBool);
 
 //            console.log("globalLPBool is: " + top_header[1]);
