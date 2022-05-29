@@ -1,4 +1,4 @@
-console.log = function () { };
+//console.log = function () { };
 
 var globalCID;
 var globalB1;
@@ -3061,12 +3061,13 @@ function doitConcession3(testList_, testListNonce_, x_, a_, _timeTemp, _balTemp,
     newDiv2.style.display = 'block';
     globalBalDB = remakeKey_;
     globalCID_  = _cidTemp;
-
+    console.log("globalbaldb is: " + globalBalDB);
+    
 
 //    console.log("doit3: " + JSON.stringify(testList_));
 //    console.log("doit3: " + JSON.stringify(testListNonce_));
 //    console.log("doit3: " + JSON.stringify(x_));
-    console.log("doit4: " + JSON.stringify(a_));
+//    console.log("doit4: " + JSON.stringify(a_));
 
 }
 
