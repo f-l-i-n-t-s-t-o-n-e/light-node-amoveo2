@@ -1150,7 +1150,7 @@ function checkItem(_x){
     newDiv2.appendChild(text11);
     newDiv2.appendChild(positionsInput);
 
-    var positionsGoButton = button_maker2("Create offer", function() { return doitConcession2(globalBalDB, positionsInput.value)});
+    var positionsGoButton = button_maker2("Create offer", function() { return doitConcession15(positionsInput.value)});
 
     var positionsViewMarketButton = button_maker2("View market", function() { return loadBookmark2(globalCID_)});
 
