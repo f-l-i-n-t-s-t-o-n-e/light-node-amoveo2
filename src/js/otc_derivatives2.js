@@ -721,7 +721,11 @@ function bet_builder(bet_e, amount_e, them_e){
 
 
     async function doitConcession2(key, amount_){
+
+        console.log("globalbaldb2: " + JSON.stringify(globalBalDB));
+
         console.log("in doitConcession2: " + JSON.stringify(key));
+        
         var key1 = key;
      //   var bet = atob(key.oracleLanguage[1]); //= bet_e.value;
         var amount = Math.round(parseFloat(key.bal));
