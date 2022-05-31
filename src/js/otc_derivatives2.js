@@ -1385,21 +1385,35 @@ function showSportEventFields(){
 
        if (createNumber == 0){
         if (above.checked == true){
-        question.value = "W = https://www.coinmarketcap.com historical data daily close price; X = $" + coinPrice.value + "; Y = " + whichCoin.value + "; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (price of Y is more than X as of Z as reported by W)";
+
+//        question.value = "W = https://www.coinmarketcap.com historical data daily close price; X = $" + coinPrice.value + "; Y = " + whichCoin.value + "; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (price of Y is more than X as of Z as reported by W)";
+
+        question.value = "W = https://www.coinmarketcap.com historical data daily close price; X = $" + coinPrice.value + "; Y = " + whichCoin.value + "; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; 52906A00B17127C521D2D887FD533609FFD106C96E9BC24F235A102155481B8C";
+
+
         }
         if (below.checked == true){
-        question.value = "W = https://www.coinmarketcap.com historical data daily close price; X = $" + coinPrice.value + "; Y = " + whichCoin.value + "; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (price of Y is more than X as of Z as reported by W); return opposite of previous output";
+
+//        question.value = "W = https://www.coinmarketcap.com historical data daily close price; X = $" + coinPrice.value + "; Y = " + whichCoin.value + "; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (price of Y is more than X as of Z as reported by W); return opposite of previous output";
+
+        question.value = "W = https://www.coinmarketcap.com historical data daily close price; X = $" + coinPrice.value + "; Y = " + whichCoin.value + "; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; 13003549F8759A2403780D82F2A77C26EA4736A4398C750E6EA4630827F98CA9";
+
         }
 
         }
 
         if (createNumber == 1){
         if (above.checked == true){
-        question.value = "W = " + whichCoin.value +"; X = " + coinPrice.value + "; Y = empty; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))";
+        
+//        question.value = "W = " + whichCoin.value +"; X = " + coinPrice.value + "; Y = empty; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))";
+
+        question.value = "W = " + whichCoin.value +"; X = " + coinPrice.value + "; Y = empty; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; 438BB0E60EFBAA0CE93AE818F16BF6059C594CAF677C07805DF5F4FF05C6B6A1";
+        
         }
 
         if (below.checked == true){
-        question.value = "W = " + whichCoin.value +"; X = " + coinPrice.value + "; Y = empty; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; return (Competitor W defeated Competitor X in the competition that started on date Z (in local time)); return opposite of previous output";
+
+        question.value = "W = " + coinPrice.value +"; X = " + whichCoin.value + "; Y = empty; Z (in MM/DD/YYYY) = " + maturityDate1.value + "; 438BB0E60EFBAA0CE93AE818F16BF6059C594CAF677C07805DF5F4FF05C6B6A1";
 
         }
             console.log(bridgeCoin_.value);
@@ -1429,7 +1443,12 @@ function showSportEventFields(){
 //            question.value = "let proposer_ = amoveo pubkey " + keys.pub() + "; let swap_offer = the first swap getting onchain with this oid proposed by proposer_; let pubkey_ = the amoveo pubkey (uncompressed) that the swap_offer acceptor sent 1 satoshi to in the transaction with nonce exactly one above accepting the swap; pubkey_ = the substring of pubkey_ starting after the 3rd character and ending before the first '+'; if " + evmPubkey_.value +  " has not received any of " + bridgeCoin_.value + " on " + network1_.value + " from pubkey_ within 6 blocks of this swap offer getting into an Amoveo block, return TRUE, else return( (pubkey_ has received an amount of " + bridgeCoin_.value + " on " + network2_.value + " greater than or equal to the amount they sent " + evmPubkey_.value + " on " + network1_.value + " no later than " + responseTimeLimit_.value + " hours after the " + network1_.value + " transaction confirms) == TRUE); OVERRIDE: oracle returns TRUE if ( pubkey_ has sent at least two tx to " + evmPubkey_.value + " on network " + network1_.value + " AND this is more tx than the number of accepted swaps with that oid that were proposed by amoveo pubkey proposer_ of this swap offer); MASTER OVERRIDE: oracle returns FALSE if (the amoveo block containing the first swap with this oid proposed by proposer_ contains another swap with this oid proposed by proposer_ ); randomizer:  " + Math.random();
 
 
-            question.value = "let proposer_ = amoveo pubkey " + keys.pub() + ";3DF979E51A72A96B7EEFA11F2DDB566F446768E32D0368A17B46A3C650FCD08C; pubkey_ = the substring of pubkey_ starting after the 3rd character and ending before the first '+'; if " + evmPubkey_.value +  " has not received any of " + bridgeCoin_.value + " on " + network1_.value + " from pubkey_ within 6 blocks of this swap offer getting into an Amoveo block, return TRUE, else return( (pubkey_ has received an amount of " + bridgeCoin_.value + " on " + network2_.value + " greater than or equal to the amount they sent " + evmPubkey_.value + " on " + network1_.value + " no later than " + responseTimeLimit_.value + " hours after the " + network1_.value + " transaction confirms) == TRUE); OVERRIDE: oracle returns TRUE if ( pubkey_ has sent at least two tx to " + evmPubkey_.value + " on network " + network1_.value + " 1BC4AA787CCF80F3070860B8BC8E6627CED238664D4CC97ED9172699322C7AC2 " + Math.random();
+
+//old, need to replace with new question logic
+//            question.value = "let proposer_ = amoveo pubkey " + keys.pub() + ";3DF979E51A72A96B7EEFA11F2DDB566F446768E32D0368A17B46A3C650FCD08C; pubkey_ = the substring of pubkey_ starting after the 3rd character and ending before the first '+'; if " + evmPubkey_.value +  " has not received any of " + bridgeCoin_.value + " on " + network1_.value + " from pubkey_ within 6 blocks of this swap offer getting into an Amoveo block, return TRUE, else return( (pubkey_ has received an amount of " + bridgeCoin_.value + " on " + network2_.value + " greater than or equal to the amount they sent " + evmPubkey_.value + " on " + network1_.value + " no later than " + responseTimeLimit_.value + " hours after the " + network1_.value + " transaction confirms) == TRUE); OVERRIDE: oracle returns TRUE if ( pubkey_ has sent at least two tx to " + evmPubkey_.value + " on network " + network1_.value + " 1BC4AA787CCF80F3070860B8BC8E6627CED238664D4CC97ED9172699322C7AC2 " + Math.random();
+
+
+            question.value = "let proposer_ = amoveo pubkey " + keys.pub() + "; let providerReceive = " + evmPubkey_.value + "; let network1 = " + network1_.value + "; let network2 = " + network2_.value + "; let bridgeCoin = " + bridgeCoin_.value + "; let randomizer: " + Math.random() + "; EF43B64E16EB22C6B3346E1B4E55E5ECD5703A9C12F3B707177319D53675F97E";
 
 
             console.log("QQQQQQQ: " + question.value.split(" ")[35]);

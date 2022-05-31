@@ -4,11 +4,45 @@ var globalCID;
 var globalB1;
 var globalcreatetradenonce;
 
+var bridgeLogic = "EF43B64E16EB22C6B3346E1B4E55E5ECD5703A9C12F3B707177319D53675F97E";
+
+var coinAboveLogic = "52906A00B17127C521D2D887FD533609FFD106C96E9BC24F235A102155481B8C";
+
+var coinBelowLogic = "13003549F8759A2403780D82F2A77C26EA4736A4398C750E6EA4630827F98CA9";
+
+var competitionLogic = "438BB0E60EFBAA0CE93AE818F16BF6059C594CAF677C07805DF5F4FF05C6B6A1";
+
+// validateOracleBridge("EF43B64E16EB22C6B3346E1B4E55E5ECD5703A9C12F3B707177319D53675F97E")
+
+function validateOracleBridge(_x){
+
+    if(_x.search(bridgeLogic) > Number(-1) && (_x.length == (Number(_x.search(bridgeLogic)) + Number(bridgeLogic.length)) ) ){
+
+        return (true);
+
+    }else{
+
+        return (false);
+    }
+
+}
+
+function validateAnyLogic(_x, _logic){
+
+    if(_x.search(_logic) > Number(-1) && (_x.length == (Number(_x.search(_logic)) + Number(_logic.length)) ) ){
+
+        return (true);
+
+    }else{
+
+        return (false);
+    }
+
+}
 
 var globalPubkeyNonce;
 
 var insideBridgeNonce;
-
 
 var globalBridgeBool2;
 
@@ -1772,7 +1806,10 @@ var placeholder;
         //            console.log(oracle_text.search("as reported by Close price as of "));
          //           console.log(oracle_text.search(" on https://coinmarketcap.com/currencies/bitcoin/historical-data/"));
 
-                    if (( (oracle_text.search("bitcoin price is more than ") == 0) || (oracle_text.search("bitcoin price is less than ") == 0)) && (oracle_text.search("as reported by Close price as of ") >= 33) && (oracle_text.search("as reported by Close price as of ") <= 35) && (oracle_text.search(" on https://coinmarketcap.com/currencies/bitcoin/historical-data/") >= 77) && (oracle_text.search(" on https://coinmarketcap.com/currencies/bitcoin/historical-data/") <= 79)) {
+//                    if (( (oracle_text.search("bitcoin price is more than ") == 0) || (oracle_text.search("bitcoin price is less than ") == 0)) && (oracle_text.search("as reported by Close price as of ") >= 33) && (oracle_text.search("as reported by Close price as of ") <= 35) && (oracle_text.search(" on https://coinmarketcap.com/currencies/bitcoin/historical-data/") >= 77) && (oracle_text.search(" on https://coinmarketcap.com/currencies/bitcoin/historical-data/") <= 79)) {
+
+                    if ( ( (validateAnyLogic(oracle_text, coinAboveLogic)) || (validateAnyLogic(oracle_text, coinBelowLogic)) ) && (1==2) ) {
+
                         console.log("oracle text success");
                         console.log();
                             var price = oracle_text.slice(26,33);
@@ -1823,13 +1860,13 @@ var placeholder;
 
 //        console.log(oracle_text.search(";") > 0);
 
-            if ( ( oracle_text.search(";") < 0 ) || ( ( oracle_text.search("pubkey_") > 0 ) && ( ( oracle_text.search(";") > 0 ) ) ) ){
+            if ( ( oracle_text.search(";") < 0 ) || ( (  validateOracleBridge(oracle_text) ) && ( ( oracle_text.search(";") > 0 ) ) ) ){
 
                         t2 = text(oracle_text);
                           t3 = oracle_text;
 
 
-                if ( ( ( oracle_text.search("pubkey_") > 0 ) && ( ( oracle_text.search(";") > 0 ) ) ) ){
+                if ( ( ( validateOracleBridge(oracle_text) ) && ( ( oracle_text.search(";") > 0 ) ) ) ){
 
                 let piece1_ = 0;
 
@@ -1843,6 +1880,9 @@ var placeholder;
 
                 console.log("bridgeLanguage 1: " + oracle_text.split(" ")[40]);
 
+                console.log("made it inside");
+
+                /*
                 let providerPubkey = oracle_text.split(" ")[24];
 
                 let piece2_ = " has not received any of ";
@@ -1858,11 +1898,20 @@ var placeholder;
                 let piece5_ = " greater than or equal ";
 
                 let network2pieces = oracle_text.substring(0, oracle_text.search(piece5_)).split(" ");
+                */
+
+                let providerPubkey = ((oracle_text.split(";")[1]).split("=")[1]).replace(" ","");
+
+                let coinName_ = (oracle_text.split(";")[4]).split("=")[1];
+
+                let network1_ = (oracle_text.split(";")[2]).split("=")[1];
 
                 //support 
 
                 //loop thru em
 
+
+                /*
                 let network2_ = " ";
 
                 for (i = 0; i < 6; i++ ){
@@ -1880,17 +1929,23 @@ var placeholder;
 
 
                 }
+                */
+
+                let network2_ = (oracle_text.split(";")[3]).split("=")[1];
 
 
 //has received an amount of ETH on Ethereum L1 greater than or equal to the amount they sent testAddress1 on Arbitrum One no later than 0.5 hours after the Arbitrum One transaction confirms) == TRUE)
 
-                let piece6_ = " no later than ";
+//                let piece6_ = " no later than ";
 
-                let piece7_ = "  after the ";
+//                let piece7_ = "  after the ";
 
-                let timeLimit_ = oracle_text.substring(oracle_text.search(piece6_) + piece6_.length, oracle_text.search(piece7_));
+//                let timeLimit_ = oracle_text.substring(oracle_text.search(piece6_) + piece6_.length, oracle_text.search(piece7_));
 
-                let piece8_ = 0;
+                let timeLimit_ = "15";
+
+
+//                let piece8_ = 0;
 
                 let new_oracle_text = "Bridge " + coinName_ + " from " + network1_ + " to " + network2_ + " | Provider: " + providerPubkey + " | ";
 
@@ -1906,14 +1961,90 @@ var placeholder;
           //              console.log("splitting01: " + (" return opposite of previous output" == oracle_text.split(";")[5]));
                         
                         var offsetNumber;
-                        if (" return opposite of previous output" == oracle_text.split(";")[5]){
+
+//                        if (" return opposite of previous output" == oracle_text.split(";")[5]){
+
+                        if ( validateAnyLogic(oracle_text, coinBelowLogic) ) {
+
                             offsetNumber = Number(2);
+
                         }else{
+
                             offsetNumber = Number(1);
+
                         }
 
 
-                        if ((oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (price of Y is more than X as of Z as reported by W)") && (oracle_text.split(";")[0] == "W = https://www.coinmarketcap.com historical data daily close price") && (oracle_text.split(";")[4] == " return (price of Y is more than X as of Z as reported by W)")) {
+//                        if ((oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (price of Y is more than X as of Z as reported by W)") && (oracle_text.split(";")[0] == "W = https://www.coinmarketcap.com historical data daily close price") && (oracle_text.split(";")[4] == " return (price of Y is more than X as of Z as reported by W)")) {
+
+                        function checkOracleStuff(){
+
+                        console.log("throwing2");
+                        return ((oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (price of Y is more than X as of Z as reported by W)") && (oracle_text.split(";")[0] == "W = https://www.coinmarketcap.com historical data daily close price") && (oracle_text.split(";")[4] == " return (price of Y is more than X as of Z as reported by W)")) 
+                        
+
+                        }
+
+
+
+
+
+                        function checkOracleStuff2(){
+                           
+
+                        let exception_ = false;
+
+                           try {
+                                console.log("throwing0..");
+                                return checkOracleStuff();
+
+                                } catch (error){
+                                    
+                                    return (false);
+                                    exception_ = true;
+                                    console.log("throwing...");
+
+                                } finally{
+
+                                    if (exception_ == false){
+                                        console.log("inside finally");
+                                        console.log(oracle_text);                                   
+                                        return checkOracleStuff();
+
+                                    }
+                                }      
+
+                        }
+
+
+
+                        function debugging(){
+
+                            if (oracle_text.search("Y = test5") > 0){
+
+                            console.log("inside oracle check: " + checkOracleStuff());
+                            console.log("inside oracle check2: " + checkOracleStuff2());
+                            
+                            }
+                        }
+
+//                        debugging();
+
+
+
+
+                        console.log((validateAnyLogic(oracle_text, coinAboveLogic)));
+
+                        console.log((validateAnyLogic(oracle_text, coinBelowLogic)));
+
+                        if (
+
+                          (  (validateAnyLogic(oracle_text, coinAboveLogic)) || (validateAnyLogic(oracle_text, coinBelowLogic)) )
+
+
+                            ) {
+
+
          //                       console.log("splitting")
                       //        var coinName = oracle_text.split(";")[2].substring(6,3) ;
                                 var coinPrice = oracle_text.split(";")[1].substring(5, oracle_text.split(";")[1].length);
@@ -1946,7 +2077,9 @@ var placeholder;
 
 
                                 t3 =  "The price of " + coinName + " is more than "+ coinPrice + " at Midnight " + n1 + "GMT "; // Jul 15 2020 GMT; 
-                                    
+                                console.log("t3 is2: " + t3);
+                                console.log("t3 is22: " + t2);
+
                         }else{
               //                  console.log("1maturity is" + (oracle_text.split(";")[0].substring(5, 0) == " W = "));
              //                   console.log("1maturiy is" + oracle_text.split(";")[0].substring(5, 0));
@@ -1961,8 +2094,47 @@ var placeholder;
 
    //                     console.log("splitting14 is" + ( (oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") ));
 
+                            function checkOracleStuff3(){
 
-                            if ((oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))") && (oracle_text.split(";")[4] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))")) {
+
+//                            return ((oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))") && (oracle_text.split(";")[4] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))"));
+
+
+                            }
+
+
+                        function checkOracleStuff4(){
+                        
+                        let exception_ = false;
+
+                           try {
+
+                                checkOracleStuff3();
+
+                                } catch (error){
+                                    
+                                    return (false);
+                                    exception_ = true;
+                                } finally{
+
+                                    if (exception_ == false){
+                                        return checkOracleStuff3();
+                                        console.log("inside finally");
+                                    }
+                                }    
+                        }
+
+
+
+
+//                            if ((oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))") && (oracle_text.split(";")[4] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))")) {
+
+                            if (    
+
+                                    validateAnyLogic(oracle_text, competitionLogic)
+
+                                        ) {
+
 
       //                  console.log("splitting2: " + oracle_text.split(";")[5]);
       //                  console.log("splitting22: " + (" return opposite of previous output" == oracle_text.split(";")[5]));
@@ -2009,7 +2181,7 @@ var placeholder;
 
 
                         t2 = text(oracle_text);
-                          t3 = oracle_text;   
+                          t3 = oracle_text;  
                                 }
 
 
@@ -2052,8 +2224,8 @@ var placeholder;
 
 
                     var button = button_maker2("See Odds", function() { return loadBookmark(cidHolder) });
-
-                    if ( oracle_text.search("pubkey_ =") > 0 ){
+//validateOracleBridge("EF43B64E16EB22C6B3346E1B4E55E5ECD5703A9C12F3B707177319D53675F97E")
+                    if ( validateOracleBridge(oracle_text)){
                     
                     button = button_maker2("See prices", function() { return loadBookmark(cidHolder) });
 
@@ -2168,6 +2340,8 @@ var placeholder;
 
                         for (increment = 0; increment < lengthSplit; increment++ ){;
                         
+                            console.log(t3);
+
                             if (t3.search((filterText.split(" "))[increment]) < 0){
 
                                 increment2 = increment2 + 1;
@@ -2394,7 +2568,10 @@ var placeholder;
                         console.log("splitting01: " + (" return opposite of previous output" == oracle_text.split(";")[5]));
                         
                         var offsetNumber;
-                        if (" return opposite of previous output" == oracle_text.split(";")[5]){
+
+//                        if (" return opposite of previous output" == oracle_text.split(";")[5]){
+
+                        if ( validateAnyLogic(oracle_text, coinBelowLogic) ) {
                             offsetNumber = Number(2);
                         }else{
                             offsetNumber = Number(1);
@@ -2403,7 +2580,9 @@ var placeholder;
 
 
 
-                        if ( (oracle_text.search("pubkey_") < 0) && (oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (price of Y is more than X as of Z as reported by W)") && (oracle_text.split(";")[0] == "W = https://www.coinmarketcap.com historical data daily close price") && (oracle_text.split(";")[4] == " return (price of Y is more than X as of Z as reported by W)")) {
+//                        if ( ( validateOracleBridge(oracle_text) == false) && (oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (price of Y is more than X as of Z as reported by W)") && (oracle_text.split(";")[0] == "W = https://www.coinmarketcap.com historical data daily close price") && (oracle_text.split(";")[4] == " return (price of Y is more than X as of Z as reported by W)")) {
+
+                        if ( ( (validateAnyLogic(oracle_text, coinAboveLogic)) || (validateAnyLogic(oracle_text, coinBelowLogic)) ) && (validateAnyLogic(oracle_text, bridgeLogic) == false ) ) {
                                 console.log("splitting")
                       //        var coinName = oracle_text.split(";")[2].substring(6,3) ;
                                 var coinPrice = oracle_text.split(";")[1].substring(5, oracle_text.split(";")[1].length);
@@ -2452,7 +2631,9 @@ var placeholder;
 //                        console.log("splitting14 is" + ( (oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") ));
 
 
-                            if ( (oracle_text.search("pubkey_") < 0) && (oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))") && (oracle_text.split(";")[4] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))")) {
+//                            if ( (validateOracleBridge(oracle_text) == false ) && (oracle_text.split(";")[3].substring(21, 0) == " Z (in MM/DD/YYYY) = " ) && (oracle_text.split(";")[2].substring(5, 0) == " Y = ") && (oracle_text.split(";")[0].substring(4, 0) == "W = ") && (oracle_text.split(";")[1].substring(5, 0) == " X = ") && (oracle_text.split(";")[oracle_text.split(";").length - offsetNumber] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))") && (oracle_text.split(";")[4] == " return (Competitor W defeated Competitor X in the competition that started on date Z (in local time))")) {
+
+                            if ( ( validateOracleBridge(oracle_text) == false ) && ( validateAnyLogic(oracle_text, competitionLogic) ) ){
 
 //                        console.log("splitting2: " + oracle_text.split(";")[5]);
 //                        console.log("splitting22: " + (" return opposite of previous output" == oracle_text.split(";")[5]));
@@ -3581,7 +3762,7 @@ if (tempvar2 != "[[-6]]"){
    //     if (firstTimeTrades == 0){
 
 
-            if (globalB1.search(" pubkey_ =") < 0){
+            if (validateOracleBridge(globalB1) == false){
 
 
             firstTimeTrades = 1;
@@ -3630,7 +3811,7 @@ if (tempvar2 != "[[-6]]"){
             let swapOfferTrue = 0;
             let swapOfferFalse = 0;
 
-            if (globalB1.search(" pubkey_ =") > 0) {
+            if (validateOracleBridge(globalB1) ) {
 
             }else{
                 if (sortedArray.length > 0){
@@ -3662,7 +3843,7 @@ if (tempvar2 != "[[-6]]"){
     console.log(headers_object.top()[1]);
 
 
-               if ( ( ((sortedArray[i][3] < 0.01 * sortedArray[i][4]) || (sortedArray[i][3] > 100 * sortedArray[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0)) || (swapOfferTrue[1][3] == headers_object.top()[1]) ) {
+               if ( ( ((sortedArray[i][3] < 0.01 * sortedArray[i][4]) || (sortedArray[i][3] > 100 * sortedArray[i][4])) && (expertMode_ == 1) && (  validateOracleBridge(globalB1) == false  )) || (swapOfferTrue[1][3] == headers_object.top()[1]) ) {
 
                 console.log("inhere")
 
@@ -3714,7 +3895,7 @@ if (tempvar2 != "[[-6]]"){
 
 
 
-            if (globalB1.search(" pubkey_ =") < 0) {
+            if (validateOracleBridge(globalB1) == false ) {
             firstLine2.innerHTML = "Bet on false:";
 
             firstLine2.style.fontSize = "20px";
@@ -3726,7 +3907,7 @@ if (tempvar2 != "[[-6]]"){
 
             }
 
-            if (globalB1.search(" pubkey_ =") > 0) {
+            if (validateOracleBridge(globalB1)) {
             let firstLine3 = document.createElement("div");
             
             firstLine3.innerHTML = "Copy LP address to get started.";
@@ -3761,7 +3942,7 @@ if (tempvar2 != "[[-6]]"){
      //               console.log("in falsediv")
 
                 
-                if (globalB1.search(" pubkey_ =") > 0) {
+                if (validateOracleBridge(globalB1)) {
                 globalBridgeBool = 1;
                 falseDiv.innerHTML = "Fee: " + sortedArray2[i][3] + " VEO | Send up to " + sortedArray2[i][4] + " VEO worth of " + globalCoinName;
 
@@ -3782,7 +3963,7 @@ if (tempvar2 != "[[-6]]"){
 
                 let buttonFalse = button_maker2("Accept", function() { viewTrading(swapOfferFalse_)});
                 
-                            if (globalB1.search(" pubkey_ =") > 0) {
+                            if (validateOracleBridge(globalB1)) {
                 buttonFalse.style.display = 'none';
                 }else{
                 buttonFalse.style.display = 'inline';
@@ -3795,12 +3976,12 @@ if (tempvar2 != "[[-6]]"){
 
 
 
-                if ((globalB1.search(" pubkey_ =") > 0) && (sortedArray2[i][3] > 0.1 * sortedArray2[i][4])) {
+                if ((validateOracleBridge(globalB1)) && (sortedArray2[i][3] > 0.1 * sortedArray2[i][4])) {
 
 
                 }else{
 
-                if ( (((sortedArray2[i][3] < 0.01 * sortedArray2[i][4]) || (sortedArray2[i][3] > 100 * sortedArray2[i][4])) && (expertMode_ == 1) && (globalB1.search(" pubkey_ =") < 0)) || (swapOfferFalse[1][3] == headers_object.top()[1])  ) {
+                if ( (((sortedArray2[i][3] < 0.01 * sortedArray2[i][4]) || (sortedArray2[i][3] > 100 * sortedArray2[i][4])) && (expertMode_ == 1) && ( validateOracleBridge(globalB1) == false )) || (swapOfferFalse[1][3] == headers_object.top()[1])  ) {
 
                 }else{
 
@@ -3808,12 +3989,12 @@ if (tempvar2 != "[[-6]]"){
                 holderDiv.appendChild(text(" | "));
                 holderDiv.appendChild(text(falseDiv.innerHTML));
                 
-                            if (globalB1.search(" pubkey_ =") > 0) {
+                            if (validateOracleBridge(globalB1)) {
                 holderDiv.appendChild(text(" | "));
                 }
                 
 
-                                            if (globalB1.search(" pubkey_ =") < 0) {
+                                            if (validateOracleBridge(globalB1) == false) {
                                                         holderDiv.appendChild(br());
 
                                             }
@@ -3921,10 +4102,10 @@ if (tempvar2 != "[[-6]]"){
 
 
 
-                if ((globalB1.search(" pubkey_ =") > 0) && (sortedArray2[i][3] > 0.1 * sortedArray2[i][4])) {
+                if ((validateOracleBridge(globalB1)) && (sortedArray2[i][3] > 0.1 * sortedArray2[i][4])) {
 
                 }else{
-                if (globalB1.search(" pubkey_ =") > 0) {
+                if (validateOracleBridge(globalB1)) {
                 holderDiv.appendChild(copyButton_);
 
             
@@ -4294,7 +4475,7 @@ if (tempvar2 != "[[-6]]"){
     //        text3.style.display = "inline";
 
 
-                globalB1 = t3_;
+                globalB1 = t2_;
 
             text2.style.textIndent = "50px";
             text3.style.textIndent = "50px";
@@ -4329,7 +4510,7 @@ if (tempvar2 != "[[-6]]"){
 
             var providerPubkey_;
 
-            if (t3_.search("pubkey_ =") > 0){
+            if ( validateOracleBridge(t2_) ){
 
 //                if ( ( ( oracle_text.search("pubkey_") > 0 ) && ( ( oracle_text.search(";") > 0 ) ) ) ){
 
@@ -4347,6 +4528,8 @@ if (tempvar2 != "[[-6]]"){
 
                 let oracle_text = t3_;
 
+
+                /*
                 let providerPubkey = oracle_text.split(" ")[24];
 
                 let piece2_ = " has not received any of ";
@@ -4362,10 +4545,19 @@ if (tempvar2 != "[[-6]]"){
                 let piece5_ = " greater than or equal ";
 
                 let network2pieces = oracle_text.substring(0, oracle_text.search(piece5_)).split(" ");
+                */
+
+                let providerPubkey = ((oracle_text.split(";")[1]).split("=")[1]).replace(" ","");
+
+                let coinName_ = (oracle_text.split(";")[4]).split("=")[1];
+
+                let network1_ = (oracle_text.split(";")[2]).split("=")[1];
 
                 //support 
 
                 //loop thru em
+
+                /*
 
                 let network2_ = " ";
 
@@ -4386,15 +4578,21 @@ if (tempvar2 != "[[-6]]"){
                 }
 
 
+                */
+
+                let network2_ = (oracle_text.split(";")[3]).split("=")[1];
+
+
+
 //has received an amount of ETH on Ethereum L1 greater than or equal to the amount they sent testAddress1 on Arbitrum One no later than 0.5 hours after the Arbitrum One transaction confirms) == TRUE)
 
-                let piece6_ = " no later than ";
+//                let piece6_ = " no later than ";
 
-                let piece7_ = "  after the ";
+  //              let piece7_ = "  after the ";
 
-                let timeLimit_ = oracle_text.substring(oracle_text.search(piece6_) + piece6_.length, oracle_text.search(piece7_));
+                let timeLimit_ = "15"
 
-                let piece8_ = 0;
+//                let piece8_ = 0;
 
 //                let new_oracle_text = "Bridge " + coinName_ + " from " + network1_ + " to " + network2_ + " | Provider: " + providerPubkey;
                 let new_oracle_text = "Bridge " + coinName_ + " from " + network1_ + " to " + network2_;
@@ -4440,7 +4638,12 @@ if (tempvar2 != "[[-6]]"){
 
 
 
-            if (t3_.search("pubkey_ =") < 0){
+            if ( validateOracleBridge(t2_) == false){
+
+                console.log("t3 is: " + t3_.innerHTML);
+                console.log("t3 is: " + t2_);
+
+
             offers.appendChild(text4);
             text4.appendChild(input4);
             offers.appendChild(text5);
@@ -4459,7 +4662,7 @@ if (tempvar2 != "[[-6]]"){
             text6.appendChild(tradingButton);
         }
 
-            if (t3_.search("pubkey_ =") > 0){
+            if (validateOracleBridge(t2_)){
 
 
 
@@ -4489,7 +4692,7 @@ if (tempvar2 != "[[-6]]"){
 //            offers.appendChild(br());            
 
     
-                        if (t3_.search("pubkey_ =") > 0){
+                        if (validateOracleBridge(t2_)){
                         }else{
             offers.appendChild(br());
 
@@ -4929,7 +5132,7 @@ if (tempvar2 != "[[-6]]"){
             text3.innerHTML = "Event: ";
             b1.style.display = "inline";
 
-            globalB1 = t3_;
+            globalB1 = t2_;
     //        text3.style.display = "inline";
 
             text2.style.textIndent = "50px";
