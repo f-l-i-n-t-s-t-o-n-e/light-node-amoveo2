@@ -353,6 +353,10 @@ function bet_builder8(bet_e, amount_e, them_e){
         var response1 = await rpc.apost(["add", 3, btoa(Text), 0, max_price, ZERO, 0], IP, 8090);
         console.log(response1);
 
+        if (validateOracleBridge(bet_e)){
+        publishSwap(signed_offer);
+        }else{
+
         var response = await rpc.apost(
 
 //            ["add", signed_offer, ],
@@ -360,7 +364,11 @@ function bet_builder8(bet_e, amount_e, them_e){
             ["add", signed_offer, signed_99],
 
             IP, 8090);
-        console.log(response);
+
+        }
+        
+
+//        console.log(response);
         console.log( "successfully posted your bet offer. here it is " + JSON.stringify(signed_offer));
 //        console.log( "successfully sent your 99swap to the server. here it is: " + JSON.stringify(signed_99));
         dcba.changeStatus();
@@ -488,6 +496,156 @@ function bet_builder(bet_e, amount_e, them_e){
 
     var fee = 152050;
     var ZERO = btoa(array_to_string(integer_to_array(0, 32)));
+
+    async function doitConcessionBridge(_Time, _Bal, _Type, _Cid, _fee, _total, _security, _failedOrNot){
+
+        //var bet = atob(key.oracleLanguage[1]); //= bet_e.value;
+
+        //{"time":1651945256089,"bal":3300000,"type":1,"cid":"ByZcGkIPGaylZf6H6mfLPbCI60AdJXwcZQK73/JJEzI="}
+
+        //need to recontstruct this
+
+
+        var remakeKey= {};
+        
+        remakeKey['time'] = _Time;
+        remakeKey['bal'] = _Bal;
+        remakeKey['type'] = _Type;
+        remakeKey['cid'] = _Cid;
+
+
+        console.log("in doitConcession8: " + JSON.stringify(remakeKey));
+
+
+        var key = remakeKey;
+        var key1 = key;
+
+//        var amount = Math.round(parseFloat(key.bal));
+
+//        var them = Math.round(Number(0.0025)*parseFloat(key.bal));
+
+        var amount = Math.round(parseFloat(Number(_total)*Number(100000000)));
+
+
+        if (_failedOrNot == 0){
+
+        var them = Math.round(parseFloat(Number(_security)*Number(100000000)));
+
+        }else{
+
+        var them = Math.round(parseFloat((Number(_security)+Number(_fee))*Number(100000000)*Number(0.1)));
+
+        }
+
+        var my_acc = await rpc.apost(["account", keys.pub()])
+
+        if(my_acc === 0){
+            display.innerHTML = "error: no key loaded. ";
+            return(0);
+        };
+
+        var offer = {};
+
+        offer.nonce = my_acc[2] + 1;
+
+        var now = headers_object.top()[1];
+
+        offer.start_limit = now - 1;
+ //       var TimeLimit = parseInt(timelimit.value);
+        offer.end_limit = now + 144;
+
+
+
+//        offer.amount1 = parseInt(key.bal);
+//        offer.amount2 = parseInt(Number(key.bal)*0.0025);
+
+        offer.amount1 = amount;
+        offer.amount2 = them;
+
+        
+        offer.cid1 = key.cid;
+        offer.cid2 = "";
+        if("" === offer.cid1){
+            offer.cid1 = ZERO;
+        }
+        if("" === offer.cid2){
+            offer.cid2 = ZERO;
+        }
+
+
+
+        offer.type1 = (parseInt(key.type) || 0);
+
+
+
+
+
+        offer.type2 = (parseInt(0) || 0);
+        
+        offer.fee1 = fee;
+        offer.fee2 = fee;
+        offer.acc1 = keys.pub();
+        offer.partial_match = false;
+        var signed_offer;
+        
+        if(offer.type1 == 0){
+            var bal = my_acc[1];
+            if(my_acc == "empty"){
+                console.log("not enough veo to make this offer. (possibly no key loaded?) ");
+                return(0);
+            };
+            if(offer.amount1 > bal){
+                console.log("not enough veo to make this offer");
+                return(0);
+            } else {
+                console.log(JSON.stringify(offer));
+                signed_offer = swaps.pack(offer);
+         //       display.innerHTML = JSON.stringify(signed_offer);
+                publishSwap(signed_offer);
+                console.log("CONCESSION PUBLISHED");
+            }
+        } else {
+            var key = btoa(array_to_string(sub_accounts.key(keys.pub(), offer.cid1, offer.type1)));
+
+
+            var sub_acc = await merkle.arequest_proof("sub_accounts", key);
+
+
+            if(sub_acc == "empty"){
+                console.log("not enough subcurrency to  make this offer (possibly no key loaded?)");
+                return(0);
+            };
+            bal = sub_acc[1];
+            if(offer.amount1 > bal){
+                console.log("not enough subcurrency to  make this offer");
+                return(0);
+            } else {
+                
+                signed_offer = swaps.pack(offer);
+            //    display.innerHTML = JSON.stringify(signed_offer);
+            console.log("IP IS" + get_ip());
+//                    var response12 = await rpc.apost(
+//            ["add", signed_offer],
+//            get_ip(), 8090);
+ //       console.log(response12);
+
+                publishSwap(signed_offer);
+              //  console.log("CONCESSION signed_offer +" signed_offer);
+                console.log("CONCESSION PUBLISHED");
+                console.log(JSON.stringify(signed_offer));
+//                abcd.positionConfirmation.style.display = 'inline';                
+
+  //              function clearPositionConfirmation(){
+                abcd.positionConfirmation.style.display = 'none';                
+
+     //           }
+
+ //               setTimeout(clearPositionConfirmation, 3000);
+
+            };
+        };
+    };
+
 
     async function doitConcession8(_Time, _Bal, _Type, _Cid){
 
@@ -1577,8 +1735,14 @@ function showSportEventFields(){
         //div.appendChild(startButton);
         console.log("did we get here");
 
-        bet_builder8(question.value, our_amount.value, their_amount.value)
 
+        if (createNumber == 3){
+
+        bet_builder8(question.value, our_amount.value, Number(their_amount.value) * Number(2) )
+
+        }else{    
+        bet_builder8(question.value, our_amount.value, their_amount.value)
+        }
       //  print_offer();
     }
     function stablecoin_view() {

@@ -4,6 +4,12 @@ var globalCID;
 var globalB1;
 var globalcreatetradenonce;
 
+var globalBridgeFee;
+
+var globalBridgeTotal;
+
+var globalCID3;
+
 var bridgeLogic = "EF43B64E16EB22C6B3346E1B4E55E5ECD5703A9C12F3B707177319D53675F97E";
 
 var coinAboveLogic = "52906A00B17127C521D2D887FD533609FFD106C96E9BC24F235A102155481B8C";
@@ -14,9 +20,62 @@ var competitionLogic = "438BB0E60EFBAA0CE93AE818F16BF6059C594CAF677C07805DF5F4FF
 
 // validateOracleBridge("EF43B64E16EB22C6B3346E1B4E55E5ECD5703A9C12F3B707177319D53675F97E")
 
+
+
+
+async function trustedCidCheck(_x){
+
+var main_contract = await rpc.apost(["contracts", _x]);
+
+    console.log(JSON.stringify(main_contract));
+
+    if (main_contract == 0){
+        return (false);
+    }else{
+
+        return (true);
+    }
+
+}
+
+async function cidNotOnChain(_x){
+
+    var Contract = await merkle.arequest_proof("contracts", _x);
+
+
+    console.log(Contract == "empty");
+    console.log(JSON.stringify(Contract));
+
+//    if (Contract == )
+
+    return (Contract == "empty");
+
+    }
+
+
+
+var expertMoad_;
+
+expertMoad_ = 1;
+
+function expertMoad(){
+
+
+
+if (expertMoad_ == 0){
+expertMoad_ = 1;
+}else{
+
+expertMoad_ = 0;
+
+}
+
+
+}
+
 function validateOracleBridge(_x){
 
-    if(_x.search(bridgeLogic) > Number(-1) && (_x.length == (Number(_x.search(bridgeLogic)) + Number(bridgeLogic.length)) ) ){
+    if(_x.search(bridgeLogic) > Number(-1) && (_x.length == (Number(_x.search(bridgeLogic)) + Number(bridgeLogic.length)) ) && (expertMoad_ == 1) ){
 
         return (true);
 
@@ -29,7 +88,7 @@ function validateOracleBridge(_x){
 
 function validateAnyLogic(_x, _logic){
 
-    if(_x.search(_logic) > Number(-1) && (_x.length == (Number(_x.search(_logic)) + Number(_logic.length)) ) ){
+    if(_x.search(_logic) > Number(-1) && (_x.length == (Number(_x.search(_logic)) + Number(_logic.length)) ) && (expertMoad_ == 1) ){
 
         return (true);
 
@@ -320,7 +379,7 @@ function checkItem(_x){
         console.log("bettingOdds is: " + bettingOdds.slice(4));
         console.log("bettingOdds is: " + (bettingOdds.slice(4).map(function(x){return(atob(x))})));
 
-        var oddsDigest = (bettingOdds.slice(1).map(function(x){return(atob(x))}));
+        var oddsDigest = (bettingOdds.slice(4).map(function(x){return(atob(x))}));
         console.log("oddsDigest is: " + oddsDigest);
 
 
@@ -1692,7 +1751,7 @@ var displayOraclesNumber = 0;
 //xxxxxxxx
 
 
-function display_oracles(l) {
+async function display_oracles(l) {
 
 
       //              console.log("showing h1" + l);
@@ -1753,7 +1812,7 @@ function display_oracles(l) {
 
       //                  console.log("here is el: "+ JSON.stringify(h));
 
-                        function oraclePull (h){
+                     async function oraclePull (h){
             //            var Oracle = await rpc.apost(["oracle", h[1]]);
             
 var placeholder;
@@ -2342,7 +2401,10 @@ var placeholder;
                         
                             console.log(t3);
 
-                            if (t3.search((filterText.split(" "))[increment]) < 0){
+//                            if (t3.search((filterText.split(" "))[increment]) < 0){
+
+                            if (t3.toLowerCase().indexOf( ((filterText.split(" "))[increment]).toLowerCase() ) < 0){
+
 
                                 increment2 = increment2 + 1;
 
@@ -2402,9 +2464,31 @@ var placeholder;
 
 
                         if (increment2 < 1) {
+
+                        let tempVariable = false;
+
+                        if (filterText.toLowerCase().indexOf("bridge") >= 0){
+
+                        tempVariable = await trustedCidCheck(cidHolder);
+
+                        console.log("tempVariable is: " + tempVariable);
+
+                        }else{
+
+                        tempVariable = false;
+
+                        }
+
+                        if ( tempVariable && validateOracleBridge(oracle_text) && (expertMoad_ == 1) ){
+
+                        }else{
+
                         oracles.appendChild(t2);
                         oracles.appendChild(button);
                         oracles.appendChild(br());
+                        
+                        }
+
                         }
 
                     }
@@ -3365,14 +3449,14 @@ if (tempvar2 != "[[-6]]"){
                 positionDiv.appendChild(br());                
 
                 positionDiv.appendChild(text("Risk: "));
-                positionDiv.appendChild(text(Number(myStake / 100000000).toPrecision(3)));
+                positionDiv.appendChild(text(Number(myStake / 100000000)));
                 
 
  
                 positionDiv.appendChild(br());
 
                 positionDiv.appendChild(text("Reward: "));
-                positionDiv.appendChild(text(Number(((Number(theirStake))/100000000).toPrecision(3))));
+                positionDiv.appendChild(text(Number(((Number(theirStake))/100000000))));
                 
                 internalNonce = internalNonce + 1;
 
@@ -3551,16 +3635,32 @@ if (tempvar2 != "[[-6]]"){
                 let bridgeCustomerSentButton = button_maker2("Go", function() { continueBridge() });
 
                 let bridgeCustomerNoSentField = document.createElement("div");
-                let bridgeCustomerNoSentButton = button_maker2("Go", function() { continueBridge() });
+                let bridgeCustomerNoSentButton = button_maker2("Go", function() { bridgeConcessionLogic2() });
 
                 let bridgeProviderSentField = document.createElement("div");
-                let bridgeProviderSentButton = button_maker2("I received my coins.", function() { continueBridge() });
+                let bridgeProviderSentButton = button_maker2("I received my coins.", function() { bridgeConcessionLogic() });
 
                 let bridgeProviderNoSentField = document.createElement("div");
                 let bridgeProviderNoSentButton = button_maker2("Didn't receive coins. Dispute.", function() { continueBridge() });
 
 
 
+
+    function bridgeConcessionLogic(){
+
+        //if the provider sent the coins
+
+        doitConcessionBridge("100", globalBridgeTotal, 2, globalCID3, globalBridgeFee, globalBridgeTotal, globalBridgeFee, 0)
+
+    }
+
+   function bridgeConcessionLogic2(){
+
+        //if the customer didnt send the coins
+
+        doitConcessionBridge("100", globalBridgeTotal, 2, globalCID3, globalBridgeFee, globalBridgeTotal, globalBridgeFee, 1)
+
+    }    
 
     function continueBridge(){
         bridgingDiv.style.display = 'none';
@@ -3819,7 +3919,7 @@ if (tempvar2 != "[[-6]]"){
 
     //                console.log("in truvdiv")
 
-                    trueDiv.innerHTML = "Odds: " + sortedArray[i][1] + " | Risk: " + sortedArray[i][3] + " | Profit: " + sortedArray[i][4] ;
+                    trueDiv.innerHTML = "Odds: " + sortedArray[i][1] + " | Risk: " + Number(sortedArray[i][3]).toPrecision(6)/1 + " | Profit: " + Number(sortedArray[i][4]).toPrecision(6)/1 ;
 
                     swapOfferTrue = sortedArray[i][2];
 
@@ -3944,14 +4044,17 @@ if (tempvar2 != "[[-6]]"){
                 
                 if (validateOracleBridge(globalB1)) {
                 globalBridgeBool = 1;
-                falseDiv.innerHTML = "Fee: " + sortedArray2[i][3] + " VEO | Send up to " + sortedArray2[i][4] + " VEO worth of " + globalCoinName;
+//                falseDiv.innerHTML = "Fee: " + sortedArray2[i][3] + " VEO | Send up to " + sortedArray2[i][4] + " VEO worth of " + globalCoinName;
+
+
+                falseDiv.innerHTML = "Fee: " + Number(0.5)*Number(sortedArray2[i][3]).toPrecision(6)/1 + " VEO | Security deposit: " + Number(0.5)*Number(sortedArray2[i][3]).toPrecision(6)/1 + " VEO | Send up to " + sortedArray2[i][4] + " VEO worth of " + globalCoinName;
 
 
 
                 }else{
                 globalBridgeBool = 0;
 
-                falseDiv.innerHTML = "Odds: " + sortedArray2[i][1] + " | Risk: " + sortedArray2[i][3] + " | Profit: " + sortedArray2[i][4] ;
+                falseDiv.innerHTML = "Odds: " + sortedArray2[i][1] + " | Risk: " + Number(sortedArray2[i][3]).toPrecision(6)/1 + " | Profit: " + Number(sortedArray2[i][4]).toPrecision(6)/1 ;
                 
                 }
                 
@@ -4077,7 +4180,18 @@ if (tempvar2 != "[[-6]]"){
                 globalCopiedBool = 1;
                 copyToClipboard(globalProviderPubkey);
                 globalBlankText = 0;
-                globalNotBlankText = 1;                           
+                globalNotBlankText = 1;
+
+                globalBridgeFee = Number(0.5)*Number(sortedArray2[i][3]);
+                globalBridgeTotal = Number(sortedArray2[i][4]) + Number(sortedArray2[i][3]);
+
+                globalCID3 = offersInput.value;
+
+                console.log(globalBridgeFee);
+
+                console.log(globalBridgeTotal);
+
+                console.log(globalCID3);             
 
                 }
 
@@ -4374,17 +4488,17 @@ if (tempvar2 != "[[-6]]"){
 
         if (amountSwapped2 != true){
         
-        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountGain) - s2c(amountLose)).toPrecision(3))).concat(" ")+"| Profit: ".concat(Number(s2c(amountLose).toPrecision(3))).concat(" | ").concat(idStuff);
+        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountGain) - s2c(amountLose)).toPrecision(5))).concat(" ")+"| Profit: ".concat(Number(s2c(amountLose).toPrecision(5))).concat(" | ").concat(idStuff);
         
-        _risk_ = Number((s2c(amountGain) - s2c(amountLose)).toPrecision(3));
-        _profit_ = Number(s2c(amountLose).toPrecision(3));
+        _risk_ = Number((s2c(amountGain) - s2c(amountLose)));
+        _profit_ = Number(s2c(amountLose));
         
         } else {
        
-        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountLose)).toPrecision(3))).concat(" ")+"| Profit: ".concat(Number((s2c(amountGain) - s2c(amountLose)).toPrecision(3))).concat(" | ").concat(idStuff);
+        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountLose)).toPrecision(5))).concat(" ")+"| Profit: ".concat(Number((s2c(amountGain) - s2c(amountLose)).toPrecision(5))).concat(" | ").concat(idStuff);
         
-        _risk_ = Number((s2c(amountLose)).toPrecision(3));
-        _profit_ = Number((s2c(amountGain) - s2c(amountLose)).toPrecision(3));
+        _risk_ = Number((s2c(amountLose)));
+        _profit_ = Number((s2c(amountGain) - s2c(amountLose)));
 
         }
 
@@ -4697,7 +4811,9 @@ if (tempvar2 != "[[-6]]"){
             offers.appendChild(br());
 
         }
+
         globalInputBool = 1;
+
         }
 
 
@@ -4990,11 +5106,11 @@ if (tempvar2 != "[[-6]]"){
           var probLanguage = " | Implied Probability: ";
 
           if (amountSwapped2 == true){
-          var implProb = (Number(100) - 100*((s2c(amountGain) - s2c(amountLose) )/ (s2c(amountGain)))).toPrecision(3) + "%";
+          var implProb = (Number(100) - 100*((s2c(amountGain) - s2c(amountLose) )/ (s2c(amountGain)))).toPrecision(7) + "%";
           console.log("bbbb " + implProb);
             }else{
 
-            var implProb = (100*((s2c(amountGain) - s2c(amountLose) )/ (s2c(amountGain)))).toPrecision(3) + "%";
+            var implProb = (100*((s2c(amountGain) - s2c(amountLose) )/ (s2c(amountGain)))).toPrecision(7) + "%";
 
             }
 
@@ -5010,7 +5126,7 @@ if (tempvar2 != "[[-6]]"){
                  var x = Number(-100) + Number(10000)/(Number(100)*(Number(1)-percentage));
                  console.log("ZZZZ: " + "-"+x.toPrecision(3)); 
                  var probLanguage = " | Betting odds: ";
-                implProb = "-"+x.toPrecision(4);
+                implProb = "-"+x.toPrecision(7);
 
 
                 }
@@ -5021,7 +5137,7 @@ if (tempvar2 != "[[-6]]"){
                  var x = (Number(100)*(Number(1)/percentage)) - Number(100);
                  console.log("GGGG" + "+"+x.toPrecision(3));
                  var probLanguage = " | Betting odds: ";
-                 implProb = "+"+x.toPrecision(4);
+                 implProb = "+"+x.toPrecision(7);
 
             }
             
@@ -5043,7 +5159,7 @@ if (tempvar2 != "[[-6]]"){
                  var x = Number(-100) + Number(10000)/(Number(100)*(Number(1)-percentage));
                  console.log("ZZZZ: " + "-"+x.toPrecision(3)); 
                  var probLanguage = " | Betting odds: ";
-                implProb = "-"+x.toPrecision(4);
+                implProb = "-"+x.toPrecision(7);
 
 
                 }
@@ -5054,7 +5170,7 @@ if (tempvar2 != "[[-6]]"){
                  var x = (Number(100)*(Number(1)/percentage)) - Number(100);
                  console.log("GGGG" + "+"+x.toPrecision(3));
                  var probLanguage = " | Betting odds: ";
-                 implProb = "+"+x.toPrecision(4);
+                 implProb = "+"+x.toPrecision(7);
 
             }
             
@@ -5081,9 +5197,9 @@ if (tempvar2 != "[[-6]]"){
 
 
         if (amountSwapped2 != true){
-        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountGain) - s2c(amountLose)).toPrecision(3))).concat(" ")+"| Profit: ".concat(Number(s2c(amountLose).toPrecision(3))).concat(" | ").concat(idStuff);
+        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountGain) - s2c(amountLose)).toPrecision(5))).concat(" ")+"| Profit: ".concat(Number(s2c(amountLose).toPrecision(5))).concat(" | ").concat(idStuff);
         } else {
-        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountLose)).toPrecision(3))).concat(" ")+"| Profit: ".concat(Number(s2c(amountGain).toPrecision(3))).concat(" | ").concat(idStuff);
+        var text = "You win if "+direction+ probLanguage.concat(implProb).concat(" | Risk: ").concat(Number((s2c(amountLose)).toPrecision(5))).concat(" ")+"| Profit: ".concat(Number(s2c(amountGain).toPrecision(5))).concat(" | ").concat(idStuff);
         }
 
   //      var text.appendChild("asdfs");
